@@ -23,5 +23,9 @@ export const enum ShortcutAction {
 
     MKB_TOGGLE = 'mkb.toggle',
 
+    GYRO_TOGGLE = 'gyro.toggle',
+    GYRO_RECALIBRATE = 'gyro.recalibrate',
+    GYRO_SWITCH_STICK = 'gyro.stick.switch',
+
     TRUE_ACHIEVEMENTS_OPEN = 'ta.open',
 };

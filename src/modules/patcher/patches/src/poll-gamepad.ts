@@ -21,6 +21,10 @@ if (window.BX_EXPOSED.disableGamepadPolling) {
 
 const currentGamepad = $gamepadVar$;
 
+if (window.BX_EXPOSED.isGyroActive && window.BX_EXPOSED.isGyroActive()) {
+    self.gamepadIsIdle.set(currentGamepad.index, false);
+}
+
 const btnHome = currentGamepad.buttons[16];
 // Controller shortcuts
 if (btnHome) {

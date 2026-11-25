@@ -1,5 +1,5 @@
 import { StreamPref, StorageKey, type PrefTypeMap } from "@/enums/pref-keys";
-import { DeviceVibrationMode, StreamPlayerType, StreamVideoProcessing, VideoPowerPreference, VideoRatio, VideoPosition, StreamStat, StreamStatPosition, StreamVideoProcessingMode } from "@/enums/pref-values";
+import { DeviceVibrationMode, GyroAxes, GyroBehavior, GyroMode, GyroSource, GyroStick, StreamPlayerType, StreamVideoProcessing, VideoPowerPreference, VideoRatio, VideoPosition, StreamStat, StreamStatPosition, StreamVideoProcessingMode } from "@/enums/pref-values";
 import { STATES } from "../global";
 import { KeyboardShortcutDefaultId } from "../local-db/keyboard-shortcuts-table";
 import { MkbMappingDefaultPresetId } from "../local-db/mkb-mapping-presets-table";
@@ -40,6 +40,113 @@ export class StreamSettingsStorage extends BaseSettingsStorage<StreamPref> {
                 suffix: '%',
                 exactTicks: 20,
             },
+        },
+
+        [StreamPref.GYRO_MODE]: {
+            requiredVariants: 'full',
+            label: t('gyroscope'),
+            default: GyroMode.OFF,
+            options: {
+                [GyroMode.OFF]: t('off'),
+                [GyroMode.ON]: t('always-on'),
+                [GyroMode.LT]: t('gyro-mode-lt'),
+                [GyroMode.RT]: t('gyro-mode-rt'),
+            },
+        },
+
+        [StreamPref.GYRO_SOURCE]: {
+            requiredVariants: 'full',
+            label: t('gyro-source'),
+            default: GyroSource.AUTO,
+            options: {
+                [GyroSource.AUTO]: t('auto'),
+                [GyroSource.DEVICE]: t('device'),
+                [GyroSource.CONTROLLER]: t('controller'),
+            },
+        },
+
+        [StreamPref.GYRO_STICK]: {
+            requiredVariants: 'full',
+            label: t('gyro-stick'),
+            default: GyroStick.RS,
+            options: {
+                [GyroStick.RS]: t('gyro-right-stick-aim'),
+                [GyroStick.LS]: t('gyro-left-stick-racing'),
+            },
+        },
+
+        [StreamPref.GYRO_BEHAVIOR]: {
+            requiredVariants: 'full',
+            label: t('gyro-behavior'),
+            default: GyroBehavior.AUTO,
+            options: {
+                [GyroBehavior.AUTO]: t('auto'),
+                [GyroBehavior.MOTION]: t('gyro-behavior-motion'),
+                [GyroBehavior.TILT]: t('gyro-behavior-tilt'),
+            },
+        },
+
+        [StreamPref.GYRO_AXES]: {
+            requiredVariants: 'full',
+            label: t('gyro-axes'),
+            default: GyroAxes.AUTO,
+            options: {
+                [GyroAxes.AUTO]: t('auto'),
+                [GyroAxes.BOTH]: t('gyro-axes-both'),
+                [GyroAxes.HORIZONTAL]: t('gyro-axes-horizontal'),
+                [GyroAxes.VERTICAL]: t('gyro-axes-vertical'),
+            },
+        },
+
+        [StreamPref.GYRO_SENSITIVITY_X]: {
+            requiredVariants: 'full',
+            label: t('horizontal-sensitivity'),
+            default: 100,
+            min: 5,
+            max: 250,
+            params: {
+                steps: 5,
+                suffix: '%',
+                ticks: 50,
+            },
+        },
+
+        [StreamPref.GYRO_SENSITIVITY_Y]: {
+            requiredVariants: 'full',
+            label: t('vertical-sensitivity'),
+            default: 100,
+            min: 0,
+            max: 250,
+            params: {
+                steps: 5,
+                suffix: '%',
+                ticks: 50,
+            },
+        },
+
+        [StreamPref.GYRO_DEADZONE]: {
+            requiredVariants: 'full',
+            label: t('gyro-deadzone'),
+            default: 2,
+            min: 0,
+            max: 30,
+            params: {
+                steps: 1,
+                suffix: '%',
+                ticks: 5,
+            },
+        },
+
+        [StreamPref.GYRO_INVERT_X]: {
+            requiredVariants: 'full',
+            label: t('gyro-invert-x'),
+            default: false,
+        },
+
+        [StreamPref.GYRO_INVERT_Y]: {
+            requiredVariants: 'full',
+            label: t('gyro-invert-y'),
+            default: false,
         },
 
         [StreamPref.CONTROLLER_POLLING_RATE]: {

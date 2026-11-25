@@ -65,6 +65,9 @@ export type StreamEvents = {
     'mkb.setting.updated': {};
     'keyboardShortcuts.updated': {};
     'deviceVibration.updated': {};
+    'gyro.updated': {};
+    'gyro.state.changed': { enabled: boolean };
+    'gyro.sensor.status': {};
 
     'gameBar.activated': {};
     'speaker.state.changed': { state: SpeakerState };

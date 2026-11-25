@@ -6,11 +6,33 @@ import { GamepadKey, GamepadKeyName } from "@/enums/gamepad";
 import { getStreamPref } from "@/utils/pref-utils";
 import { StreamPref } from "@/enums/pref-keys";
 
+const GYRO_CAPABLE_REGEX = /054c|057e|28de|2dc8|dualsense|dualshock|wireless controller|pro controller|joy-con|steam controller|8bitdo|flydigi|gulikit/i;
+const MOTION_SENSOR_GAMEPAD_REGEX = /motion sensors|accelerometer|gyroscope/i;
+
+export function isMotionSensorSubGamepad(gamepad: Gamepad | null | undefined): boolean {
+    if (!gamepad) {
+        return false;
+    }
+    return MOTION_SENSOR_GAMEPAD_REGEX.test(gamepad.id) || (gamepad.buttons.length === 0 && gamepad.axes.length >= 6);
+}
+
+export function isGyroCapableGamepad(gamepad: Gamepad | null | undefined): boolean {
+    if (!gamepad) {
+        return false;
+    }
+    if (isMotionSensorSubGamepad(gamepad)) {
+        return true;
+    }
+    if ((gamepad as any).pose && ((gamepad as any).pose.angularVelocity || (gamepad as any).pose.orientation)) {
+        return true;
+    }
+    return GYRO_CAPABLE_REGEX.test(gamepad.id);
+}
 
 // Show a toast when connecting/disconecting controller
 export function showGamepadToast(gamepad: Gamepad) {
-    // Don't show toast for virtual controller
-    if (gamepad.id === VIRTUAL_GAMEPAD_ID) {
+    // Don't show toast for virtual controller or dedicated motion-sensor sub-devices
+    if (gamepad.id === VIRTUAL_GAMEPAD_ID || isMotionSensorSubGamepad(gamepad)) {
         return;
     }
 
@@ -33,7 +55,8 @@ export function showGamepadToast(gamepad: Gamepad) {
     let status;
     if (gamepad.connected) {
         const supportVibration = !!gamepad.vibrationActuator;
-        status = (supportVibration ? '✅' : '❌') + ' ' + t('vibration-status');
+        const supportGyro = isGyroCapableGamepad(gamepad);
+        status = (supportVibration ? '✅' : '❌') + ' ' + t('vibration-status') + ' | ' + (supportGyro ? '✅' : '❌') + ' ' + t('gyroscope');
     } else {
         status = t('disconnected');
     }
@@ -50,7 +73,7 @@ export function getUniqueGamepadNames() {
     const names: string[] = [];
 
     for (const gamepad of gamepads) {
-        if (gamepad?.connected && gamepad.id !== VIRTUAL_GAMEPAD_ID) {
+        if (gamepad?.connected && gamepad.id !== VIRTUAL_GAMEPAD_ID && !isMotionSensorSubGamepad(gamepad)) {
             !names.includes(gamepad.id) && names.push(gamepad.id);
         }
     }

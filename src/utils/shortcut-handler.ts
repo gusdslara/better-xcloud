@@ -11,6 +11,7 @@ import { RendererShortcut } from "@/modules/shortcuts/renderer-shortcut";
 import { TrueAchievements } from "./true-achievements";
 import { NativeMkbHandler } from "@/modules/mkb/native-mkb-handler";
 import { VirtualControllerShortcut } from "@/modules/shortcuts/virtual-controller-shortcut";
+import { GyroManager } from "@/modules/gyro-manager";
 
 export class ShortcutHandler {
     static runAction(action: ShortcutAction) {
@@ -73,6 +74,18 @@ export class ShortcutHandler {
 
             case ShortcutAction.CONTROLLER_XBOX_BUTTON_PRESS:
                 VirtualControllerShortcut.pressXboxButton();
+                break;
+
+            case ShortcutAction.GYRO_TOGGLE:
+                GyroManager.getInstance().toggle();
+                break;
+
+            case ShortcutAction.GYRO_SWITCH_STICK:
+                GyroManager.getInstance().switchTargetStick();
+                break;
+
+            case ShortcutAction.GYRO_RECALIBRATE:
+                GyroManager.getInstance().recalibrate(true);
                 break;
         }
     }

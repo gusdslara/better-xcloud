@@ -14,6 +14,7 @@ import { BxEventBus } from "./bx-event-bus";
 import { FeatureGates } from "./feature-gates";
 import { getGlobalPref } from "./pref-utils";
 import { LocalCoOpManager } from "./local-co-op-manager";
+import { GyroManager, type ExternalGyroSample } from "@/modules/gyro-manager";
 
 export enum SupportedInputType {
     CONTROLLER = 'Controller',
@@ -273,5 +274,9 @@ export const BxExposed = {
     hasCustomTouchControl: TouchController.hasCustomControl,
     hasCustomNativeMkb: (productId: string) => {
         return BX_FLAGS.ForceNativeMkbTitles?.includes(productId);
-    }
+    },
+
+    isGyroActive: isFullVersion() ? () => GyroManager.getInstance().isActivelyPolling() : () => false,
+    feedGyroData: isFullVersion() ? (data: ExternalGyroSample) => GyroManager.getInstance().feedExternalSample(data) : () => {},
+    toggleGyro: isFullVersion() ? (force?: boolean) => GyroManager.getInstance().toggle(force) : () => Promise.resolve(false),
 };

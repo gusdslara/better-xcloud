@@ -25,6 +25,9 @@ export const SHORTCUT_ACTIONS: ShortcutActions = {
 
     [t('controller')]: {
         [ShortcutAction.CONTROLLER_XBOX_BUTTON_PRESS]: [t('button-xbox'), t('press')],
+        [ShortcutAction.GYRO_TOGGLE]: [t('gyroscope'), t('toggle')],
+        [ShortcutAction.GYRO_SWITCH_STICK]: [t('gyroscope'), t('gyro-switch-stick')],
+        [ShortcutAction.GYRO_RECALIBRATE]: [t('gyroscope'), t('gyro-recenter')],
     },
 
     // Device

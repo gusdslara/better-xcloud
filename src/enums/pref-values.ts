@@ -66,6 +66,37 @@ export const enum DeviceVibrationMode {
     OFF = 'off',
 }
 
+export const enum GyroMode {
+    OFF = 'off',
+    ON = 'on',
+    LT = 'lt',
+    RT = 'rt',
+}
+
+export const enum GyroSource {
+    AUTO = 'auto',
+    DEVICE = 'device',
+    CONTROLLER = 'controller',
+}
+
+export const enum GyroStick {
+    RS = 'rs',
+    LS = 'ls',
+}
+
+export const enum GyroBehavior {
+    AUTO = 'auto',
+    MOTION = 'motion',
+    TILT = 'tilt',
+}
+
+export const enum GyroAxes {
+    AUTO = 'auto',
+    BOTH = 'both',
+    HORIZONTAL = 'x',
+    VERTICAL = 'y',
+}
+
 export const enum NativeMkbMode {
     DEFAULT = 'default',
     ON = 'on',

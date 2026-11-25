@@ -1,5 +1,5 @@
 import type { BaseSettingsStorage } from "@/utils/settings-storages/base-settings-storage";
-import type { BlockFeature, CodecProfile, DeviceVibrationMode, GameBarPosition, LoadingScreenRocket, NativeMkbMode, StreamPlayerType, StreamResolution, StreamStat, StreamStatPosition, StreamVideoProcessing, StreamVideoProcessingMode, TouchControllerMode, TouchControllerStyleCustom, TouchControllerStyleStandard, UiLayout, UiSection, UiTheme, VideoPosition, VideoPowerPreference, VideoRatio } from "./pref-values"
+import type { BlockFeature, CodecProfile, DeviceVibrationMode, GameBarPosition, GyroAxes, GyroBehavior, GyroMode, GyroSource, GyroStick, LoadingScreenRocket, NativeMkbMode, StreamPlayerType, StreamResolution, StreamStat, StreamStatPosition, StreamVideoProcessing, StreamVideoProcessingMode, TouchControllerMode, TouchControllerStyleCustom, TouchControllerStyleStandard, UiLayout, UiSection, UiTheme, VideoPosition, VideoPowerPreference, VideoRatio } from "./pref-values"
 
 export const enum StorageKey {
     GLOBAL = 'BetterXcloud',
@@ -144,6 +144,17 @@ export const enum StreamPref {
     DEVICE_VIBRATION_MODE = 'deviceVibration.mode',
     DEVICE_VIBRATION_INTENSITY = 'deviceVibration.intensity',
 
+    GYRO_MODE = 'gyro.mode',
+    GYRO_SOURCE = 'gyro.source',
+    GYRO_STICK = 'gyro.stick',
+    GYRO_BEHAVIOR = 'gyro.behavior',
+    GYRO_AXES = 'gyro.axes',
+    GYRO_SENSITIVITY_X = 'gyro.sensitivityX',
+    GYRO_SENSITIVITY_Y = 'gyro.sensitivityY',
+    GYRO_DEADZONE = 'gyro.deadzone',
+    GYRO_INVERT_X = 'gyro.invertX',
+    GYRO_INVERT_Y = 'gyro.invertY',
+
     CONTROLLER_POLLING_RATE = 'controller.pollingRate',
     CONTROLLER_SETTINGS = 'controller.settings',
 
@@ -187,6 +198,16 @@ export type StreamPrefTypeMap = {
     [StreamPref.CONTROLLER_SETTINGS]: ControllerSettings;
     [StreamPref.DEVICE_VIBRATION_INTENSITY]: number;
     [StreamPref.DEVICE_VIBRATION_MODE]: DeviceVibrationMode;
+    [StreamPref.GYRO_AXES]: GyroAxes;
+    [StreamPref.GYRO_BEHAVIOR]: GyroBehavior;
+    [StreamPref.GYRO_DEADZONE]: number;
+    [StreamPref.GYRO_INVERT_X]: boolean;
+    [StreamPref.GYRO_INVERT_Y]: boolean;
+    [StreamPref.GYRO_MODE]: GyroMode;
+    [StreamPref.GYRO_SENSITIVITY_X]: number;
+    [StreamPref.GYRO_SENSITIVITY_Y]: number;
+    [StreamPref.GYRO_SOURCE]: GyroSource;
+    [StreamPref.GYRO_STICK]: GyroStick;
     [StreamPref.KEYBOARD_SHORTCUTS_IN_GAME_PRESET_ID]: number;
     [StreamPref.LOCAL_CO_OP_ENABLED]: boolean;
     [StreamPref.MKB_P1_MAPPING_PRESET_ID]: number;
@@ -279,6 +300,16 @@ export const ALL_PREFS: {
         StreamPref.CONTROLLER_SETTINGS,
         StreamPref.DEVICE_VIBRATION_INTENSITY,
         StreamPref.DEVICE_VIBRATION_MODE,
+        StreamPref.GYRO_AXES,
+        StreamPref.GYRO_BEHAVIOR,
+        StreamPref.GYRO_DEADZONE,
+        StreamPref.GYRO_INVERT_X,
+        StreamPref.GYRO_INVERT_Y,
+        StreamPref.GYRO_MODE,
+        StreamPref.GYRO_SENSITIVITY_X,
+        StreamPref.GYRO_SENSITIVITY_Y,
+        StreamPref.GYRO_SOURCE,
+        StreamPref.GYRO_STICK,
         StreamPref.KEYBOARD_SHORTCUTS_IN_GAME_PRESET_ID,
         StreamPref.LOCAL_CO_OP_ENABLED,
         StreamPref.MKB_P1_MAPPING_PRESET_ID,

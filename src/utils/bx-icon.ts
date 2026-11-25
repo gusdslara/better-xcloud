@@ -30,6 +30,8 @@ import iconTrash from "@assets/svg/trash.svg" with { type: "text" };
 import iconCaretLeft from "@assets/svg/caret-left.svg" with { type: "text" };
 import iconCaretRight from "@assets/svg/caret-right.svg" with { type: "text" };
 import iconCamera from "@assets/svg/camera.svg" with { type: "text" };
+import iconGyroscope from "@assets/svg/gyroscope.svg" with { type: "text" };
+import iconGyroscopeSlash from "@assets/svg/gyroscope-slash.svg" with { type: "text" };
 import iconMicrophone from "@assets/svg/microphone.svg" with { type: "text" };
 import iconMicrophoneMuted from "@assets/svg/microphone-slash.svg" with { type: "text" };
 
@@ -78,6 +80,8 @@ export const BxIcon = {
 
     MICROPHONE: iconMicrophone,
     MICROPHONE_MUTED: iconMicrophoneMuted,
+    GYROSCOPE: iconGyroscope,
+    GYROSCOPE_OFF: iconGyroscopeSlash,
 
     // Stream Badge
     BATTERY: iconBatteryFull,

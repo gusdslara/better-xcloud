@@ -28,6 +28,8 @@ import { MkbExtraSettings } from "./settings/mkb-extra";
 import { BxEventBus } from "@/utils/bx-event-bus";
 import { getGlobalPref, getPrefInfo, getStreamPref, isStreamPref, setGlobalPref, STORAGE } from "@/utils/pref-utils";
 import { SettingsManager } from "@/modules/settings-manager";
+import { GyroManager } from "@/modules/gyro-manager";
+import { GyroMode } from "@/enums/pref-values";
 
 
 type SettingTabSectionItem = Partial<{
@@ -49,7 +51,7 @@ type SettingTabSectionItem = Partial<{
 type SettingTabSection = {
     group: 'general' | 'server' | 'stream' | 'game-bar' | 'mkb' | 'touch-control' | 'loading-screen' | 'ui' | 'other' | 'advanced' | 'footer'
         | 'audio' | 'video'
-        | 'device' | 'controller' | 'mkb' | 'native-mkb'
+        | 'device' | 'controller' | 'gyro' | 'mkb' | 'native-mkb'
         | 'stats';
     label?: string;
     unsupported?: boolean;
@@ -541,6 +543,107 @@ export class SettingsDialog extends NavigationDialog {
             pref: StreamPref.DEVICE_VIBRATION_INTENSITY,
             unsupported: !STATES.browser.capabilities.deviceVibration,
         }],
+    },
+
+    {
+        requiredVariants: 'full',
+        group: 'gyro',
+        label: t('gyroscope'),
+        unsupported: !GyroManager.getInstance().hasDeviceSensorSupport() && !GyroManager.getInstance().hasWebHidSupport() && !('getGamepads' in window.navigator),
+        unsupportedNote: '⚠️ ' + t('browser-unsupported-feature'),
+        items: [
+            ($parent: HTMLElement) => {
+                const gyroManager = GyroManager.getInstance();
+                const $statusText = CE('div', {
+                    style: 'font-size: 0.85rem; opacity: 0.85; margin-bottom: 8px; line-height: 1.4;',
+                });
+
+                const updateStatusText = () => {
+                    const status = gyroManager.getSensorStatus();
+                    const devIcon = status.deviceReceiving ? '✅' : (status.deviceApiSupported ? '⚪' : '❌');
+                    const ctrlIcon = status.controllerGyroActive ? '✅' : (status.controllerGamepadDetected ? '⚪' : '❌');
+                    let ctrlDetail = '';
+                    if (status.controllerName) {
+                        const shortName = status.controllerName.replace(/\s*\(.*?\)\s*/g, '').trim();
+                        ctrlDetail = ` (${shortName})`;
+                    }
+                    $statusText.textContent = `📱 ${t('device')}: ${devIcon}   |   🎮 ${t('controller')}: ${ctrlIcon}${ctrlDetail}`;
+                    $debugText.textContent = gyroManager.getDebugLine();
+                };
+
+                const $debugText = CE('div', {
+                    style: 'font-size: 0.7rem; opacity: 0.7; margin-bottom: 8px; line-height: 1.4; font-family: monospace; user-select: text;',
+                });
+                window.setInterval(() => $debugText.isConnected && $debugText.offsetParent && updateStatusText(), 500);
+
+                updateStatusText();
+                BxEventBus.Stream.on('gyro.sensor.status', updateStatusText);
+                this.onMountedCallbacks.push(updateStatusText);
+
+                const buttons: HTMLElement[] = [
+                    createButton({
+                        label: t('gyro-recenter'),
+                        icon: BxIcon.REFRESH,
+                        style: ButtonStyle.FOCUSABLE | ButtonStyle.FULL_WIDTH,
+                        onClick: () => {
+                            gyroManager.recalibrate(true);
+                        },
+                    }),
+                ];
+
+                if (gyroManager.hasWebHidSupport()) {
+                    buttons.push(createButton({
+                        label: t('gyro-connect-controller'),
+                        icon: BxIcon.CONTROLLER,
+                        style: ButtonStyle.PRIMARY | ButtonStyle.FOCUSABLE | ButtonStyle.FULL_WIDTH,
+                        onClick: async () => {
+                            await gyroManager.requestControllerHidAccess();
+                            updateStatusText();
+                        },
+                    }));
+                }
+
+                const $box = CE('div', {
+                    class: 'bx-settings-row',
+                    style: 'display: flex; flex-direction: column; gap: 6px;',
+                    _nearby: { orientation: 'vertical' },
+                }, $statusText, $debugText, ...buttons);
+
+                $parent.appendChild($box);
+            },
+            {
+                pref: StreamPref.GYRO_MODE,
+                multiLines: true,
+                onCreated: (_setting: SettingTabSectionItem, $control: HTMLElement) => {
+                    $control.addEventListener('input', () => {
+                        if (getStreamPref(StreamPref.GYRO_MODE) !== GyroMode.OFF) {
+                            GyroManager.getInstance().requestDevicePermissions();
+                        }
+                    });
+                },
+            },
+            {
+                pref: StreamPref.GYRO_STICK,
+                multiLines: true,
+            },
+            {
+                pref: StreamPref.GYRO_SOURCE,
+                multiLines: true,
+            },
+            {
+                pref: StreamPref.GYRO_BEHAVIOR,
+                multiLines: true,
+            },
+            {
+                pref: StreamPref.GYRO_AXES,
+                multiLines: true,
+            },
+            StreamPref.GYRO_SENSITIVITY_X,
+            StreamPref.GYRO_SENSITIVITY_Y,
+            StreamPref.GYRO_DEADZONE,
+            StreamPref.GYRO_INVERT_X,
+            StreamPref.GYRO_INVERT_Y,
+        ],
     }] : [];
 
     private readonly TAB_MKB_ITEMS: Array<SettingTabSection | false> = isFullVersion() ? [

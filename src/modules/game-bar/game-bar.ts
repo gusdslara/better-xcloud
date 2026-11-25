@@ -1,6 +1,7 @@
 import { CE, createSvgIcon } from "@utils/html";
 import { ScreenshotAction } from "./screenshot-action";
 import { TouchControlAction } from "./touch-control-action";
+import { GyroAction } from "./gyro-action";
 import { BxEvent } from "@utils/bx-event";
 import { BxIcon } from "@utils/bx-icon";
 import type { BaseGameBarAction } from "./base-action";
@@ -56,6 +57,7 @@ export class GameBar {
         this.actions = [
             new ScreenshotAction(),
             ...(STATES.userAgent.capabilities.touch && (getGlobalPref(GlobalPref.TOUCH_CONTROLLER_MODE) !== TouchControllerMode.OFF) ? [new TouchControlAction()] : []),
+            new GyroAction(),
             new SpeakerAction(),
             new RendererAction(),
             new MicrophoneAction(),

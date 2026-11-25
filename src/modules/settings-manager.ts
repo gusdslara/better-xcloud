@@ -14,6 +14,7 @@ import { t } from "@/utils/translation";
 import { BxSelectElement } from "@/web-components/bx-select";
 import { XboxApi } from "@/utils/xbox-api";
 import { EmulatedMkbHandler } from "./mkb/mkb-handler";
+import { GyroManager } from "./gyro-manager";
 
 type SettingType = Partial<{
     hidden: true;
@@ -21,6 +22,8 @@ type SettingType = Partial<{
     onChangeUi: () => void;
     $element: HTMLElement;
 }>;
+
+const refreshGyroSettings = () => GyroManager.getInstance().refreshSettings();
 
 export class SettingsManager {
     private static instance: SettingsManager;
@@ -47,6 +50,36 @@ export class SettingsManager {
         },
         [StreamPref.DEVICE_VIBRATION_INTENSITY]: {
             onChange: StreamSettings.refreshControllerSettings,
+        },
+        [StreamPref.GYRO_MODE]: {
+            onChangeUi: refreshGyroSettings,
+        },
+        [StreamPref.GYRO_SOURCE]: {
+            onChangeUi: refreshGyroSettings,
+        },
+        [StreamPref.GYRO_STICK]: {
+            onChangeUi: refreshGyroSettings,
+        },
+        [StreamPref.GYRO_BEHAVIOR]: {
+            onChangeUi: refreshGyroSettings,
+        },
+        [StreamPref.GYRO_AXES]: {
+            onChangeUi: refreshGyroSettings,
+        },
+        [StreamPref.GYRO_SENSITIVITY_X]: {
+            onChangeUi: refreshGyroSettings,
+        },
+        [StreamPref.GYRO_SENSITIVITY_Y]: {
+            onChangeUi: refreshGyroSettings,
+        },
+        [StreamPref.GYRO_DEADZONE]: {
+            onChangeUi: refreshGyroSettings,
+        },
+        [StreamPref.GYRO_INVERT_X]: {
+            onChangeUi: refreshGyroSettings,
+        },
+        [StreamPref.GYRO_INVERT_Y]: {
+            onChangeUi: refreshGyroSettings,
         },
         [StreamPref.CONTROLLER_POLLING_RATE]: {
             onChange: StreamSettings.refreshControllerSettings,

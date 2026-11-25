@@ -1,3 +1,5 @@
+import { isFullVersion } from "@macros/build" with { type: "macro" };
+
 import { STATES } from "@utils/global.ts";
 import { createSvgIcon } from "@utils/html.ts";
 import { BxIcon, type BxIconRaw } from "@utils/bx-icon";
@@ -5,13 +7,17 @@ import { t } from "@utils/translation.ts";
 import { StreamBadges } from "./stream-badges.ts";
 import { StreamStats } from "./stream-stats.ts";
 import { SettingsDialog } from "../ui/dialog/settings-dialog.ts";
+import { GyroManager } from "../gyro-manager.ts";
+import { BxEventBus } from "@/utils/bx-event-bus.ts";
 
 
 export class StreamUiHandler {
     private static $btnStreamSettings: HTMLElement | null | undefined;
     private static $btnStreamStats: HTMLElement | null | undefined;
+    private static $btnGyro: HTMLElement | null | undefined;
     private static $btnRefresh: HTMLElement | null | undefined;
     private static $btnHome: HTMLElement | null | undefined;
+    private static gyroListenerBound = false;
 
     private static cloneStreamHudButton($btnOrg: HTMLElement, label: string, svgIcon: BxIconRaw): HTMLElement | null {
         if (!$btnOrg) {
@@ -190,13 +196,45 @@ export class StreamUiHandler {
 
         const $btnParent = $orgButton.parentElement!;
 
+        // Create Gyroscope quick toggle button in Stream HUD
+        let $btnGyro = StreamUiHandler.$btnGyro;
+        if (isFullVersion() && typeof $btnGyro === 'undefined') {
+            $btnGyro = StreamUiHandler.cloneStreamHudButton($orgButton, t('gyroscope'), BxIcon.GYROSCOPE);
+            $btnGyro?.addEventListener('click', async (e) => {
+                hideGripHandle();
+                e.preventDefault();
+
+                const enabled = await GyroManager.getInstance().toggle();
+                $btnGyro!.classList.toggle('bx-stream-menu-button-on', enabled);
+            });
+            $btnGyro?.addEventListener('contextmenu', e => {
+                e.preventDefault();
+                GyroManager.getInstance().switchTargetStick();
+            });
+
+            StreamUiHandler.$btnGyro = $btnGyro;
+
+            if (!StreamUiHandler.gyroListenerBound) {
+                StreamUiHandler.gyroListenerBound = true;
+                BxEventBus.Stream.on('gyro.state.changed', payload => {
+                    StreamUiHandler.$btnGyro?.classList.toggle('bx-stream-menu-button-on', payload.enabled);
+                });
+            }
+        }
+
         if ($btnStreamSettings && $btnStreamStats) {
             const btnStreamStatsOn = (!streamStats.isHidden() && !streamStats.isGlancing());
             $btnStreamStats.classList.toggle('bx-stream-menu-button-on', btnStreamStatsOn);
 
             // Insert buttons after Stream Settings button
             $btnParent.insertBefore($btnStreamStats, $btnParent.lastElementChild);
-            $btnParent.insertBefore($btnStreamSettings, $btnStreamStats);
+            if ($btnGyro) {
+                $btnGyro.classList.toggle('bx-stream-menu-button-on', GyroManager.getInstance().isEnabled());
+                $btnParent.insertBefore($btnGyro, $btnStreamStats);
+                $btnParent.insertBefore($btnStreamSettings, $btnGyro);
+            } else {
+                $btnParent.insertBefore($btnStreamSettings, $btnStreamStats);
+            }
         }
 
         // Move the Dots button to the beginning
@@ -207,6 +245,7 @@ export class StreamUiHandler {
     static reset() {
         StreamUiHandler.$btnStreamSettings = undefined;
         StreamUiHandler.$btnStreamStats = undefined;
+        StreamUiHandler.$btnGyro = undefined;
         StreamUiHandler.$btnRefresh = undefined;
         StreamUiHandler.$btnHome = undefined;
     }

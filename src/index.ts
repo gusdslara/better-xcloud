@@ -40,6 +40,7 @@ import { StreamSettings } from "./utils/stream-settings";
 import { KeyboardShortcutHandler } from "./modules/mkb/keyboard-shortcut-handler";
 import { GhPagesUtils } from "./utils/gh-pages";
 import { DeviceVibrationManager } from "./modules/device-vibration-manager";
+import { GyroManager } from "./modules/gyro-manager";
 import { BxEventBus } from "./utils/bx-event-bus";
 import { getGlobalPref, getStreamPref } from "./utils/pref-utils";
 import { SettingsManager } from "./modules/settings-manager";
@@ -380,6 +381,7 @@ function unload() {
         NativeMkbHandler.getInstance()?.destroy();
 
         DeviceVibrationManager.getInstance()?.reset();
+        GyroManager.getInstance()?.reset();
     }
 
     // Destroy StreamPlayer
@@ -454,6 +456,7 @@ function main() {
         STATES.userAgent.capabilities.touch && TouchController.updateCustomList();
 
         DeviceVibrationManager.getInstance();
+        GyroManager.getInstance();
 
         // Check for Update
         BX_FLAGS.CheckForUpdate && checkForUpdate();

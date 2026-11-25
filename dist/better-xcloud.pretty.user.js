@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better xCloud
 // @namespace    https://github.com/redphx
-// @version      6.7.14-beta
+// @version      6.7.13
 // @description  Improve Xbox Cloud Gaming (xCloud) experience
 // @author       redphx
 // @license      MIT
@@ -99,6 +99,16 @@ var ALL_PREFS = {
   "controller.settings",
   "deviceVibration.intensity",
   "deviceVibration.mode",
+  "gyro.axes",
+  "gyro.behavior",
+  "gyro.deadzone",
+  "gyro.invertX",
+  "gyro.invertY",
+  "gyro.mode",
+  "gyro.sensitivityX",
+  "gyro.sensitivityY",
+  "gyro.source",
+  "gyro.stick",
   "keyboardShortcuts.preset.inGameId",
   "localCoOp.enabled",
   "mkb.p1.preset.mappingId",
@@ -195,7 +205,7 @@ class UserAgent {
   });
  }
 }
-var SCRIPT_VERSION = "6.7.14-beta", SCRIPT_VARIANT = "full", AppInterface = window.AppInterface;
+var SCRIPT_VERSION = "6.7.13", SCRIPT_VARIANT = "full", AppInterface = window.AppInterface;
 UserAgent.init();
 var userAgent = window.navigator.userAgent.toLowerCase(), isTv = userAgent.includes("smart-tv") || userAgent.includes("smarttv") || /\baft.*\b/.test(userAgent), isVr = window.navigator.userAgent.includes("VR") && window.navigator.userAgent.includes("OculusBrowser"), browserHasTouchSupport = "ontouchstart" in window || navigator.maxTouchPoints > 0, userAgentHasTouchSupport = !isTv && !isVr && browserHasTouchSupport, STATES = {
  supportedRegion: !0,
@@ -515,6 +525,321 @@ var SUPPORTED_LANGUAGES = {
  "game-bar": "Game Bar",
  "getting-consoles-list": "Getting the list of consoles...",
  guide: "Guide",
+ "gyro-axes": [
+  () => "Active axes",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Ejes activos",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Eixos ativos"
+ ],
+ "gyro-axes-both": [
+  () => "Both (X & Y)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Ambos (X e Y)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Ambos (Horizontal e Vertical)"
+ ],
+ "gyro-axes-horizontal": [
+  () => "Horizontal only (X)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Solo horizontal (X)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Apenas horizontal (Eixo X)"
+ ],
+ "gyro-axes-vertical": [
+  () => "Vertical only (Y)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Solo vertical (Y)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Apenas vertical (Eixo Y)"
+ ],
+ "gyro-behavior": [
+  () => "Motion type",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Tipo de movimiento",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Modo de movimento"
+ ],
+ "gyro-behavior-motion": [
+  () => "Motion (Aim / Camera)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Movimiento (Apuntar / Cámara)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Movimento (Mira / Câmera)"
+ ],
+ "gyro-behavior-tilt": [
+  () => "Tilt (Steering / Racing)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Inclinación (Volante / Carreras)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Inclinação (Volante / Corrida)"
+ ],
+ "gyro-connect-controller": [
+  () => "Connect controller gyro (WebHID)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Conectar giroscopio del mando (WebHID)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Conectar giroscópio do controle (WebHID)"
+ ],
+ "gyro-deadzone": [
+  () => "Gyro deadzone",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Zona muerta del giroscopio",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Zona morta do giroscópio"
+ ],
+ "gyro-invert-x": [
+  () => "Invert horizontal axis",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Invertir eje horizontal",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Inverter eixo horizontal"
+ ],
+ "gyro-invert-y": [
+  () => "Invert vertical axis",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Invertir eje vertical",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Inverter eixo vertical"
+ ],
+ "gyro-left-stick-racing": [
+  () => "Left stick (Racing / Steering)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Stick izquierdo (Carreras / Dirección)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Analógico esquerdo (Corrida / Direção)"
+ ],
+ "gyro-mode-lt": [
+  () => "When holding LT (Aim)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Al mantener LT (Apuntar)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Ao segurar LT (Mirar)"
+ ],
+ "gyro-mode-rt": [
+  () => "When holding RT",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Al mantener RT",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Ao segurar RT"
+ ],
+ "gyro-recenter": [
+  () => "Recenter / Calibrate",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Recentrar / Calibrar",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Recalibrar centro"
+ ],
+ "gyro-recentered": [
+  () => "Center calibrated",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Centro calibrado",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Centro recalibrado"
+ ],
+ "gyro-right-stick-aim": [
+  () => "Right stick (Aim / Camera)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Stick derecho (Apuntar / Cámara)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Analógico direito (Mira / Câmera)"
+ ],
+ "gyro-source": [
+  () => "Sensor source",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Fuente del sensor",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Fonte do giroscópio"
+ ],
+ "gyro-stick": [
+  () => "Target stick",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Stick objetivo",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Analógico alvo"
+ ],
+ "gyro-switch-stick": [
+  () => "Switch stick (RS / LS)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Cambiar stick (RS / LS)",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Alternar analógico (RS / LS)"
+ ],
+ gyroscope: [
+  () => "Gyroscope",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Giroscopio",
+  ,
+  ,
+  ,
+  ,
+  ,
+  () => "Giroscópio"
+ ],
  help: "Help",
  hide: "Hide",
  "hide-idle-cursor": "Hide mouse cursor on idle",
@@ -1975,6 +2300,8 @@ var BxIcon = {
  TOUCH_CONTROL_DISABLE: "<svg xmlns='http://www.w3.org/2000/svg' fill='#fff' viewBox='0 0 32 32' fill-rule='evenodd' stroke-linejoin='round' stroke-miterlimit='2'><g fill='none' stroke='#fff'><path d='M6.021 5.021l20 22' stroke-width='2'/><path d='M8.735 8.559H2.909a.89.89 0 0 0-.889.889v13.146a.89.89 0 0 0 .889.888h19.34m4.289 0h2.594a.89.89 0 0 0 .889-.888V9.448a.89.89 0 0 0-.889-.889H12.971' stroke-miterlimit='1.5' stroke-width='2.083'/></g><path d='M8.147 11.981l-.053-.001-.054.001c-.55.028-.988.483-.988 1.04v6c0 .575.467 1.042 1.042 1.042l.053-.001c.55-.028.988-.484.988-1.04v-6a1.04 1.04 0 0 0-.988-1.04z'/><path d='M11.147 14.981l-.054-.001h-6a1.04 1.04 0 1 0 0 2.083h6c.575 0 1.042-.467 1.042-1.042a1.04 1.04 0 0 0-.988-1.04z'/><circle cx='25.345' cy='18.582' r='2.561' fill='none' stroke='#fff' stroke-width='1.78' transform='matrix(1.17131 0 0 1.17131 -5.74235 -5.74456)'/></svg>",
  MICROPHONE: "<svg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#fff' fill-rule='evenodd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 32 32'><path d='M21.368 6.875A5.37 5.37 0 0 0 16 1.507a5.37 5.37 0 0 0-5.368 5.368v8.588A5.37 5.37 0 0 0 16 20.831a5.37 5.37 0 0 0 5.368-5.368V6.875zM16 25.125v5.368m9.662-15.03c0 5.3-4.362 9.662-9.662 9.662s-9.662-4.362-9.662-9.662'/></svg>",
  MICROPHONE_MUTED: "<svg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#fff' fill-rule='evenodd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 32 32'><path d='M16 25.125v5.368M5.265 4.728l21.471 23.618m-4.789-5.267c-1.698 1.326-3.793 2.047-5.947 2.047-5.3 0-9.662-4.362-9.662-9.662'/><path d='M25.662 15.463a9.62 9.62 0 0 1-.978 4.242m-5.64.187c-.895.616-1.957.943-3.043.939-2.945 0-5.368-2.423-5.368-5.368v-4.831m.442-5.896A5.38 5.38 0 0 1 16 1.507c2.945 0 5.368 2.423 5.368 5.368v8.588c0 .188-.01.375-.03.562'/></svg>",
+ GYROSCOPE: "<svg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#fff' fill-rule='evenodd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13'/><ellipse cx='16' cy='16' rx='13' ry='5.5'/><ellipse cx='16' cy='16' rx='5.5' ry='13'/><circle cx='16' cy='16' r='2' fill='#fff'/></svg>",
+ GYROSCOPE_OFF: "<svg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#fff' fill-rule='evenodd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' stroke-opacity='0.65'/><ellipse cx='16' cy='16' rx='13' ry='5.5' stroke-opacity='0.65'/><circle cx='16' cy='16' r='2' fill='#fff'/><path d='M5 5l22 22' stroke-width='2.4'/></svg>",
  BATTERY: "<svg xmlns='http://www.w3.org/2000/svg' fill='#fff' fill-rule='evenodd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' stroke-miterlimit='2' viewBox='0 0 32 32'><path d='M24.774 6.71H3.097C1.398 6.71 0 8.108 0 9.806v12.387c0 1.699 1.398 3.097 3.097 3.097h21.677c1.699 0 3.097-1.398 3.097-3.097V9.806c0-1.699-1.398-3.097-3.097-3.097zm1.032 15.484a1.04 1.04 0 0 1-1.032 1.032H3.097a1.04 1.04 0 0 1-1.032-1.032V9.806a1.04 1.04 0 0 1 1.032-1.032h21.677a1.04 1.04 0 0 1 1.032 1.032v12.387zm-2.065-10.323v8.258a1.04 1.04 0 0 1-1.032 1.032H5.161a1.04 1.04 0 0 1-1.032-1.032v-8.258a1.04 1.04 0 0 1 1.032-1.032H22.71a1.04 1.04 0 0 1 1.032 1.032zm8.258 0v8.258a1.04 1.04 0 0 1-1.032 1.032 1.04 1.04 0 0 1-1.032-1.032v-8.258a1.04 1.04 0 0 1 1.032-1.032A1.04 1.04 0 0 1 32 11.871z' fill-rule='nonzero'/></svg>",
  PLAYTIME: "<svg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#fff' fill-rule='evenodd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 32 32'><g transform='matrix(.150026 0 0 .150026 -3.20332 -3.20332)' fill='none' stroke='#fff' stroke-width='16'><circle cx='128' cy='128' r='96'/><path d='M128 72v56h56'/></g></svg>",
  SERVER: "<svg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='#fff' fill-rule='evenodd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 32 32'><path d='M9.773 16c0-5.694 4.685-10.379 10.379-10.379S30.53 10.306 30.53 16s-4.685 10.379-10.379 10.379H8.735c-3.982-.005-7.256-3.283-7.256-7.265s3.28-7.265 7.265-7.265c.606 0 1.21.076 1.797.226' fill='none' stroke='#fff' stroke-width='2.076'/></svg>",
@@ -2108,8 +2435,8 @@ class BaseCanvasPlayer extends BaseStreamPlayer {
   $canvas.width = $video.videoWidth, $canvas.height = $video.videoHeight, this.$canvas = $canvas, $video.insertAdjacentElement("afterend", this.$canvas);
   let frameCallback;
   if ("requestVideoFrameCallback" in HTMLVideoElement.prototype) {
-   let $video2 = this.$video;
-   frameCallback = $video2.requestVideoFrameCallback.bind($video2);
+   let $video = this.$video;
+   frameCallback = $video.requestVideoFrameCallback.bind($video);
   } else frameCallback = window.requestAnimationFrame.bind(window);
   this.frameCallback = frameCallback, this.boundDrawFrame = this.drawFrame.bind(this);
  }
@@ -2299,6 +2626,103 @@ class StreamSettingsStorage extends BaseSettingsStorage {
     exactTicks: 20
    }
   },
+  "gyro.mode": {
+   requiredVariants: "full",
+   label: t("gyroscope"),
+   default: "off",
+   options: {
+    off: t("off"),
+    on: t("always-on"),
+    lt: t("gyro-mode-lt"),
+    rt: t("gyro-mode-rt")
+   }
+  },
+  "gyro.source": {
+   requiredVariants: "full",
+   label: t("gyro-source"),
+   default: "auto",
+   options: {
+    auto: t("auto"),
+    device: t("device"),
+    controller: t("controller")
+   }
+  },
+  "gyro.stick": {
+   requiredVariants: "full",
+   label: t("gyro-stick"),
+   default: "rs",
+   options: {
+    rs: t("gyro-right-stick-aim"),
+    ls: t("gyro-left-stick-racing")
+   }
+  },
+  "gyro.behavior": {
+   requiredVariants: "full",
+   label: t("gyro-behavior"),
+   default: "auto",
+   options: {
+    auto: t("auto"),
+    motion: t("gyro-behavior-motion"),
+    tilt: t("gyro-behavior-tilt")
+   }
+  },
+  "gyro.axes": {
+   requiredVariants: "full",
+   label: t("gyro-axes"),
+   default: "auto",
+   options: {
+    auto: t("auto"),
+    both: t("gyro-axes-both"),
+    x: t("gyro-axes-horizontal"),
+    y: t("gyro-axes-vertical")
+   }
+  },
+  "gyro.sensitivityX": {
+   requiredVariants: "full",
+   label: t("horizontal-sensitivity"),
+   default: 100,
+   min: 5,
+   max: 250,
+   params: {
+    steps: 5,
+    suffix: "%",
+    ticks: 50
+   }
+  },
+  "gyro.sensitivityY": {
+   requiredVariants: "full",
+   label: t("vertical-sensitivity"),
+   default: 100,
+   min: 0,
+   max: 250,
+   params: {
+    steps: 5,
+    suffix: "%",
+    ticks: 50
+   }
+  },
+  "gyro.deadzone": {
+   requiredVariants: "full",
+   label: t("gyro-deadzone"),
+   default: 2,
+   min: 0,
+   max: 30,
+   params: {
+    steps: 1,
+    suffix: "%",
+    ticks: 5
+   }
+  },
+  "gyro.invertX": {
+   requiredVariants: "full",
+   label: t("gyro-invert-x"),
+   default: !1
+  },
+  "gyro.invertY": {
+   requiredVariants: "full",
+   label: t("gyro-invert-y"),
+   default: !1
+  },
   "controller.pollingRate": {
    requiredVariants: "full",
    label: t("polling-rate"),
@@ -2445,9 +2869,7 @@ class StreamSettingsStorage extends BaseSettingsStorage {
    params: {
     steps: 10,
     exactTicks: 10,
-    customTextValue: (value) => {
-     return value = parseInt(value), value === 60 ? t("unlimited") : value + "fps";
-    }
+    customTextValue: (value) => (value = parseInt(value), value === 60 ? t("unlimited") : value + "fps")
    }
   },
   "video.processing.sharpness": {
@@ -2457,9 +2879,7 @@ class StreamSettingsStorage extends BaseSettingsStorage {
    max: 10,
    params: {
     exactTicks: 2,
-    customTextValue: (value) => {
-     return value = parseInt(value), value === 0 ? t("off") : value.toString();
-    }
+    customTextValue: (value) => (value = parseInt(value), value === 0 ? t("off") : value.toString())
    },
    suggest: {
     lowest: 0,
@@ -3375,9 +3795,7 @@ class NativeMkbHandler extends MkbHandler {
   return NativeMkbHandler.instance;
  }
  LOG_TAG = "NativeMkbHandler";
- static isAllowed = () => {
-  return STATES.browser.capabilities.emulatedNativeMkb && getGlobalPref("nativeMkb.mode") === "on";
- };
+ static isAllowed = () => STATES.browser.capabilities.emulatedNativeMkb && getGlobalPref("nativeMkb.mode") === "on";
  pointerClient;
  enabled = !1;
  mouseButtonsPressed = 0;
@@ -3522,8 +3940,19 @@ class NativeMkbHandler extends MkbHandler {
   });
  }
 }
+var GYRO_CAPABLE_REGEX = /054c|057e|28de|2dc8|dualsense|dualshock|wireless controller|pro controller|joy-con|steam controller|8bitdo|flydigi|gulikit/i, MOTION_SENSOR_GAMEPAD_REGEX = /motion sensors|accelerometer|gyroscope/i;
+function isMotionSensorSubGamepad(gamepad) {
+ if (!gamepad) return !1;
+ return MOTION_SENSOR_GAMEPAD_REGEX.test(gamepad.id) || gamepad.buttons.length === 0 && gamepad.axes.length >= 6;
+}
+function isGyroCapableGamepad(gamepad) {
+ if (!gamepad) return !1;
+ if (isMotionSensorSubGamepad(gamepad)) return !0;
+ if (gamepad.pose && (gamepad.pose.angularVelocity || gamepad.pose.orientation)) return !0;
+ return GYRO_CAPABLE_REGEX.test(gamepad.id);
+}
 function showGamepadToast(gamepad) {
- if (gamepad.id === VIRTUAL_GAMEPAD_ID) return;
+ if (gamepad.id === VIRTUAL_GAMEPAD_ID || isMotionSensorSubGamepad(gamepad)) return;
  if (gamepad._noToast) return;
  BxLogger.info("Gamepad", gamepad);
  let text = "🎮";
@@ -3531,8 +3960,10 @@ function showGamepadToast(gamepad) {
  let gamepadId = gamepad.id.replace(/ \(.*?Vendor: \w+ Product: \w+\)$/, "");
  text += ` - ${gamepadId}`;
  let status;
- if (gamepad.connected) status = (gamepad.vibrationActuator ? "✅" : "❌") + " " + t("vibration-status");
- else status = t("disconnected");
+ if (gamepad.connected) {
+  let supportVibration = !!gamepad.vibrationActuator, supportGyro = isGyroCapableGamepad(gamepad);
+  status = (supportVibration ? "✅" : "❌") + " " + t("vibration-status") + " | " + (supportGyro ? "✅" : "❌") + " " + t("gyroscope");
+ } else status = t("disconnected");
  Toast.show(text, status, { instant: !1 });
 }
 function simplifyGamepadName(name) {
@@ -3541,7 +3972,7 @@ function simplifyGamepadName(name) {
 function getUniqueGamepadNames() {
  let gamepads = window.navigator.getGamepads(), names = [];
  for (let gamepad of gamepads)
-  if (gamepad?.connected && gamepad.id !== VIRTUAL_GAMEPAD_ID) !names.includes(gamepad.id) && names.push(gamepad.id);
+  if (gamepad?.connected && gamepad.id !== VIRTUAL_GAMEPAD_ID && !isMotionSensorSubGamepad(gamepad)) !names.includes(gamepad.id) && names.push(gamepad.id);
  return names;
 }
 function hasGamepad() {
@@ -4081,15 +4512,15 @@ class BxNumberStepper extends HTMLInputElement {
    get() {
     return self.controlValue;
    },
-   set(value2) {
-    BxNumberStepper.setValue.call(self, value2);
+   set(value) {
+    BxNumberStepper.setValue.call(self, value);
    }
   }), Object.defineProperty(self, "disabled", {
    get() {
     return $range.disabled;
    },
-   set(value2) {
-    $btnDec.disabled = value2, $btnInc.disabled = value2, $range.disabled = value2;
+   set(value) {
+    $btnDec.disabled = value, $btnInc.disabled = value, $range.disabled = value;
    }
   }), self;
  }
@@ -4114,8 +4545,8 @@ class BxNumberStepper extends HTMLInputElement {
   BxNumberStepper.clearIntervalId.call(this);
   let $btn = e.target.closest("button");
   if (!$btn) return;
-  this.isHolding = !0, e.preventDefault(), this.intervalId = window.setInterval((e2) => {
-   BxNumberStepper.buttonPressed.call(this, e2, $btn);
+  this.isHolding = !0, e.preventDefault(), this.intervalId = window.setInterval((e) => {
+   BxNumberStepper.buttonPressed.call(this, e, $btn);
   }, 200), window.addEventListener("pointerup", this.onPointerUp, { once: !0 }), window.addEventListener("pointercancel", this.onPointerUp, { once: !0 });
  }
  static onPointerUp(e) {
@@ -4296,7 +4727,7 @@ class BxSelectElement extends HTMLSelectElement {
     $option && ($option.selected = e.target.checked), BxEvent.dispatch($select, "input");
    });
   else $content = CE("div", !1, self.$label = CE("label", { for: $select.id + "_checkbox" }, ""), self.$indicators);
-  return $select.addEventListener("input", BxSelectElement.render.bind(self)), new MutationObserver((mutationList, observer2) => {
+  return $select.addEventListener("input", BxSelectElement.render.bind(self)), new MutationObserver((mutationList, observer) => {
    mutationList.forEach((mutation) => {
     if (mutation.type === "childList" || mutation.type === "attributes") self.visibleIndex = $select.selectedIndex, self.optionsList = Array.from($select.querySelectorAll("option")), BxSelectElement.resetIndicators.call(self), BxSelectElement.render.call(self);
    });
@@ -4372,10 +4803,10 @@ class BxSelectElement extends HTMLSelectElement {
   let disableButtons = optionsList.length <= 1;
   $btnPrev?.classList.toggle("bx-gone", disableButtons), $btnNext?.classList.toggle("bx-gone", disableButtons);
   for (let i = 0;i < optionsList.length; i++) {
-   let $option2 = optionsList[i], $indicator = indicatorsList[i];
-   if (!$option2 || !$indicator) continue;
-   if (clearDataSet($indicator), $option2.selected) $indicator.dataset.selected = "true";
-   if ($option2.index === this.visibleIndex) $indicator.dataset.highlighted = "true";
+   let $option = optionsList[i], $indicator = indicatorsList[i];
+   if (!$option || !$indicator) continue;
+   if (clearDataSet($indicator), $option.selected) $indicator.dataset.selected = "true";
+   if ($option.index === this.visibleIndex) $indicator.dataset.highlighted = "true";
   }
  }
  static normalizeIndex(index) {
@@ -4410,6 +4841,535 @@ class XboxApi {
   return XboxApi.CACHED_TITLES[xboxTitleId] = title, title;
  }
 }
+var HID_FILTERS = [
+ { vendorId: 1356, productId: 3302 },
+ { vendorId: 1356, productId: 3570 },
+ { vendorId: 1356, productId: 1476 },
+ { vendorId: 1356, productId: 2508 },
+ { vendorId: 1356, productId: 2976 },
+ { vendorId: 1406, productId: 8201 },
+ { vendorId: 1406, productId: 8198 },
+ { vendorId: 1406, productId: 8199 },
+ { vendorId: 1406, productId: 8206 }
+], PHYSICALITY_LEFT_STICK = 786432, PHYSICALITY_RIGHT_STICK = 3145728;
+function createEmptySampleState() {
+ return {
+  aimRightRate: 0,
+  aimUpRate: 0,
+  rollRightRate: 0,
+  gx: 0,
+  gy: 1,
+  gz: 0,
+  hasGravity: !1,
+  fallbackRollDeg: 0,
+  fallbackPitchDeg: 0,
+  hasFallbackAngles: !1,
+  biasRight: 0,
+  biasUp: 0,
+  biasRoll: 0,
+  stillFrames: 0,
+  lastTimestamp: 0
+ };
+}
+function clamp(val, min, max) {
+ return val < min ? min : val > max ? max : val;
+}
+function unwrapAngleDelta(curr, prev) {
+ let delta = curr - prev;
+ while (delta > 180)
+  delta -= 360;
+ while (delta < -180)
+  delta += 360;
+ return delta;
+}
+class GyroManager {
+ static instance;
+ static getInstance = () => GyroManager.instance ?? (GyroManager.instance = new GyroManager);
+ LOG_TAG = "GyroManager";
+ deviceState = createEmptySampleState();
+ controllerState = createEmptySampleState();
+ neutralRollDeg = 0;
+ neutralPitchDeg = 0;
+ needsRecenter = !0;
+ prevOrientAlpha = null;
+ prevOrientBeta = null;
+ prevOrientGamma = null;
+ prevOrientTime = 0;
+ hasNativeRotationRate = !1;
+ deviceListening = !1;
+ devicePermissionGranted = !1;
+ isDialogOpen = !1;
+ rafId = null;
+ smoothX = 0;
+ smoothY = 0;
+ lastSentGx = 0;
+ lastSentGy = 0;
+ wasApplyingGyro = !1;
+ outputFromController = !1;
+ lastBaseGamepad = generateVirtualControllerMapping(0);
+ hasSeenGamepadPacket = !1;
+ virtualConnectedOnce = !1;
+ lastExternalPacketTime = 0;
+ openedHidDevices = new Set;
+ switchPacketNumber = 0;
+ activeControllerMethod = null;
+ activeControllerName = null;
+ mode = "off";
+ lastActiveNonOffMode = "on";
+ source = "auto";
+ stick = "rs";
+ behavior = "auto";
+ axes = "auto";
+ sensitivityX = 100;
+ sensitivityY = 100;
+ deadzone = 2;
+ invertX = !1;
+ invertY = !1;
+ constructor() {
+  BxLogger.info(this.LOG_TAG, "constructor()"), this.probeDeviceSensorOnce(), this.refreshSettings(), this.setupEvents(), this.initWebHidAutoConnect();
+ }
+ probeDeviceSensorOnce() {
+  if (!this.hasDeviceSensorSupport()) return;
+  let cleanup = () => {
+   window.removeEventListener("devicemotion", onMotionProbe), window.removeEventListener("deviceorientation", onOrientProbe);
+  }, onMotionProbe = (e) => {
+   let { rotationRate: rot, accelerationIncludingGravity: acc } = e;
+   if (rot && (rot.alpha !== null || rot.beta !== null || rot.gamma !== null) || acc && (acc.x !== null || acc.y !== null || acc.z !== null)) this.deviceState.lastTimestamp = performance.now(), cleanup(), BxEventBus.Stream.emit("gyro.sensor.status", {});
+  }, onOrientProbe = (e) => {
+   if (e.alpha !== null || e.beta !== null || e.gamma !== null) this.deviceState.lastTimestamp = performance.now(), cleanup(), BxEventBus.Stream.emit("gyro.sensor.status", {});
+  };
+  window.addEventListener("devicemotion", onMotionProbe, { passive: !0 }), window.addEventListener("deviceorientation", onOrientProbe, { passive: !0 }), window.setTimeout(cleanup, 3000);
+ }
+ static isMotionSensorSubGamepad(gamepad) {
+  return isMotionSensorSubGamepad(gamepad);
+ }
+ static isGyroCapableGamepad(gamepad) {
+  return isGyroCapableGamepad(gamepad);
+ }
+ getNavHid() {
+  let key = "hid";
+  return typeof window.navigator < "u" ? window.navigator[key] : void 0;
+ }
+ hasWebHidSupport() {
+  return !!this.getNavHid();
+ }
+ hasDeviceSensorSupport() {
+  return "DeviceMotionEvent" in window || "DeviceOrientationEvent" in window;
+ }
+ getSensorStatus() {
+  let controllerGamepadDetected = !1, detectedGamepadName = null, motionSubGamepadFound = !1, gamepads = window.navigator.getGamepads ? window.navigator.getGamepads() : [];
+  for (let gp of gamepads) {
+   if (!gp || !gp.connected) continue;
+   if (GyroManager.isMotionSensorSubGamepad(gp)) motionSubGamepadFound = !0, controllerGamepadDetected = !0, detectedGamepadName = detectedGamepadName || gp.id;
+   else if (GyroManager.isGyroCapableGamepad(gp)) controllerGamepadDetected = !0, detectedGamepadName = gp.id;
+  }
+  let now = performance.now(), controllerRecent = this.controllerState.lastTimestamp > 0 && now - this.controllerState.lastTimestamp < 3000, deviceReceiving = this.deviceState.lastTimestamp > 0, method = this.activeControllerMethod;
+  if (this.openedHidDevices.size > 0) method = "webhid";
+  else if (motionSubGamepadFound) method = "gamepad";
+  else if (!controllerRecent && method !== "bridge") method = null;
+  return {
+   deviceApiSupported: this.hasDeviceSensorSupport(),
+   deviceReceiving,
+   controllerGamepadDetected: controllerGamepadDetected || this.openedHidDevices.size > 0,
+   controllerGyroActive: this.openedHidDevices.size > 0 || motionSubGamepadFound || controllerRecent,
+   controllerMethod: method,
+   controllerName: this.activeControllerName || detectedGamepadName,
+   webHidSupported: this.hasWebHidSupport()
+  };
+ }
+ isEnabled() {
+  return this.mode !== "off";
+ }
+ isActivelyPolling() {
+  return STATES.isPlaying && this.mode !== "off";
+ }
+ refreshSettings = () => {
+  if (this.mode = getStreamPref("gyro.mode"), this.mode !== "off") this.lastActiveNonOffMode = this.mode;
+  this.source = getStreamPref("gyro.source"), this.stick = getStreamPref("gyro.stick"), this.behavior = getStreamPref("gyro.behavior"), this.axes = getStreamPref("gyro.axes"), this.sensitivityX = getStreamPref("gyro.sensitivityX"), this.sensitivityY = getStreamPref("gyro.sensitivityY"), this.deadzone = getStreamPref("gyro.deadzone"), this.invertX = getStreamPref("gyro.invertX"), this.invertY = getStreamPref("gyro.invertY"), this.updateRuntimeState(), BxEventBus.Stream.emit("gyro.state.changed", { enabled: this.isEnabled() }), BxEventBus.Stream.emit("gyro.updated", {});
+ };
+ async requestDevicePermissions() {
+  if (this.devicePermissionGranted) return !0;
+  let granted = !0;
+  try {
+   let MotionEvt = window.DeviceMotionEvent;
+   if (MotionEvt && typeof MotionEvt.requestPermission === "function") {
+    let res = await MotionEvt.requestPermission();
+    granted = granted && res === "granted";
+   }
+   let OrientEvt = window.DeviceOrientationEvent;
+   if (OrientEvt && typeof OrientEvt.requestPermission === "function") {
+    let res = await OrientEvt.requestPermission();
+    granted = granted && res === "granted";
+   }
+  } catch (e) {
+   BxLogger.warning(this.LOG_TAG, "requestDevicePermissions", e);
+  }
+  return this.devicePermissionGranted = granted, granted;
+ }
+ async requestControllerHidAccess() {
+  let navHid = this.getNavHid();
+  if (!navHid) return Toast.show(t("gyroscope"), t("browser-unsupported-feature")), !1;
+  try {
+   let devices = await navHid.requestDevice({ filters: HID_FILTERS });
+   if (!devices || devices.length === 0) return !1;
+   for (let device of devices)
+    await this.openHidDevice(device);
+   return BxEventBus.Stream.emit("gyro.sensor.status", {}), Toast.show(t("gyroscope"), `${t("controller")}: ${t("connected")}`, { instant: !0 }), !0;
+  } catch (e) {
+   return BxLogger.error(this.LOG_TAG, "requestControllerHidAccess", e), !1;
+  }
+ }
+ async toggle(force) {
+  let targetEnable = typeof force === "boolean" ? force : !this.isEnabled();
+  if (targetEnable) {
+   if (await this.requestDevicePermissions(), this.source === "controller" && this.hasWebHidSupport() && this.openedHidDevices.size === 0) {
+    if (!this.getSensorStatus().controllerGyroActive) await this.requestControllerHidAccess();
+   }
+  }
+  let newMode = targetEnable ? this.lastActiveNonOffMode || "on" : "off";
+  if (setStreamPref("gyro.mode", newMode, "direct"), this.refreshSettings(), targetEnable) this.recalibrate(!1);
+  else this.resetStickToNeutral();
+  let stickLabel = this.stick === "ls" ? t("left-stick") : t("right-stick"), statusMsg = targetEnable ? `${t("enabled")} (${stickLabel})` : t("disabled");
+  return Toast.show(`🎯 ${t("gyroscope")}`, statusMsg, { instant: !0 }), targetEnable;
+ }
+ switchTargetStick() {
+  let nextStick = this.stick === "rs" ? "ls" : "rs";
+  this.resetStickToNeutral(), setStreamPref("gyro.stick", nextStick, "direct"), this.refreshSettings(), this.recalibrate(!1);
+  let stickLabel = nextStick === "ls" ? t("gyro-left-stick-racing") : t("gyro-right-stick-aim");
+  return Toast.show(`🎯 ${t("gyroscope")}`, stickLabel, { instant: !0 }), nextStick;
+ }
+ recalibrate(showToast = !0) {
+  let sample = this.selectActiveSample();
+  if (sample) {
+   let { rollDeg, pitchDeg } = this.computeTiltAngles(sample);
+   this.neutralRollDeg = rollDeg, this.neutralPitchDeg = pitchDeg, this.needsRecenter = !1, sample.biasRight = sample.aimRightRate, sample.biasUp = sample.aimUpRate, sample.biasRoll = sample.rollRightRate;
+  } else this.needsRecenter = !0;
+  if (this.smoothX = 0, this.smoothY = 0, showToast) Toast.show(`🎯 ${t("gyroscope")}`, t("gyro-recentered"), { instant: !0 });
+ }
+ feedExternalSample = (data) => {
+  let isController = data.source !== "device", target = isController ? this.controllerState : this.deviceState;
+  if (isController) this.activeControllerMethod = "bridge";
+  let rightRate = -(data.wy ?? 0), upRate = data.wx ?? 0, rollRate = -(data.wz ?? 0);
+  if (this.updateBiasAndRates(target, rightRate, upRate, rollRate), typeof data.gx === "number" && typeof data.gy === "number" && typeof data.gz === "number") target.gx = data.gx, target.gy = data.gy, target.gz = data.gz, target.hasGravity = !0;
+  target.lastTimestamp = performance.now();
+ };
+ updateBiasAndRates(state, rightRate, upRate, rollRate) {
+  if (Math.abs(rightRate) + Math.abs(upRate) + Math.abs(rollRate) < 3.5) {
+   if (state.stillFrames++, state.stillFrames > 20) state.biasRight += (rightRate - state.biasRight) * 0.03, state.biasUp += (upRate - state.biasUp) * 0.03, state.biasRoll += (rollRate - state.biasRoll) * 0.03;
+  } else state.stillFrames = 0;
+  state.aimRightRate = rightRate - state.biasRight, state.aimUpRate = upRate - state.biasUp, state.rollRightRate = rollRate - state.biasRoll;
+ }
+ getScreenAngleRad() {
+  let angle = 0;
+  if (window.screen && window.screen.orientation && typeof window.screen.orientation.angle === "number") angle = window.screen.orientation.angle;
+  else if (typeof window.orientation === "number") angle = window.orientation;
+  return angle * Math.PI / 180;
+ }
+ onDeviceMotion = (e) => {
+  let now = performance.now(), rad = this.getScreenAngleRad(), cosA = Math.cos(rad), sinA = Math.sin(rad), rot = e.rotationRate;
+  if (rot && (rot.alpha !== null || rot.beta !== null || rot.gamma !== null)) {
+   this.hasNativeRotationRate = !0;
+   let wx = rot.alpha || 0, wy = rot.beta || 0, wz = rot.gamma || 0, scrWx = cosA * wx - sinA * wy, scrWy = sinA * wx + cosA * wy, scrWz = wz;
+   this.updateBiasAndRates(this.deviceState, -scrWy, scrWx, -scrWz), this.deviceState.lastTimestamp = now;
+  }
+  let acc = e.accelerationIncludingGravity;
+  if (acc && (acc.x !== null || acc.y !== null || acc.z !== null)) {
+   let iosSign = UserAgent.isSafari() ? -1 : 1, ax = (acc.x || 0) * iosSign, ay = (acc.y || 0) * iosSign, az = (acc.z || 0) * iosSign, scrGx = cosA * ax - sinA * ay, scrGy = sinA * ax + cosA * ay, scrGz = az, norm = Math.sqrt(scrGx * scrGx + scrGy * scrGy + scrGz * scrGz);
+   if (norm > 1) {
+    let smooth = this.deviceState.hasGravity ? 0.55 : 1;
+    if (this.deviceState.gx += (scrGx / norm - this.deviceState.gx) * smooth, this.deviceState.gy += (scrGy / norm - this.deviceState.gy) * smooth, this.deviceState.gz += (scrGz / norm - this.deviceState.gz) * smooth, this.deviceState.hasGravity = !0, this.deviceState.lastTimestamp = now, this.needsRecenter) this.recalibrate(!1);
+   }
+  }
+ };
+ onDeviceOrientation = (e) => {
+  if (e.alpha === null && e.beta === null && e.gamma === null) return;
+  let now = performance.now(), alpha = e.alpha || 0, beta = e.beta || 0, gamma = e.gamma || 0, rad = this.getScreenAngleRad(), cosA = Math.cos(rad), sinA = Math.sin(rad), scrPitch = cosA * beta - sinA * gamma, scrRoll = cosA * gamma + sinA * beta;
+  if (this.deviceState.fallbackRollDeg = scrRoll, this.deviceState.fallbackPitchDeg = -scrPitch, this.deviceState.hasFallbackAngles = !0, !this.hasNativeRotationRate && this.prevOrientTime > 0) {
+   let dt = (now - this.prevOrientTime) / 1000;
+   if (dt > 0.002 && dt < 0.25 && this.prevOrientAlpha !== null && this.prevOrientBeta !== null && this.prevOrientGamma !== null) {
+    let dAlpha = unwrapAngleDelta(alpha, this.prevOrientAlpha) / dt, dBeta = unwrapAngleDelta(beta, this.prevOrientBeta) / dt, dGamma = unwrapAngleDelta(gamma, this.prevOrientGamma) / dt, scrWx = cosA * dBeta - sinA * dGamma, scrWy = sinA * dBeta + cosA * dGamma;
+    this.updateBiasAndRates(this.deviceState, -scrWy, scrWx, -dAlpha);
+   }
+  }
+  if (this.prevOrientAlpha = alpha, this.prevOrientBeta = beta, this.prevOrientGamma = gamma, this.prevOrientTime = now, this.deviceState.lastTimestamp = now, this.needsRecenter && !this.deviceState.hasGravity) this.recalibrate(!1);
+ };
+ startDeviceListeners() {
+  if (this.deviceListening || !this.hasDeviceSensorSupport()) return;
+  this.deviceListening = !0, window.addEventListener("devicemotion", this.onDeviceMotion, { passive: !0 }), window.addEventListener("deviceorientation", this.onDeviceOrientation, { passive: !0 });
+ }
+ stopDeviceListeners() {
+  if (!this.deviceListening) return;
+  this.deviceListening = !1, window.removeEventListener("devicemotion", this.onDeviceMotion), window.removeEventListener("deviceorientation", this.onDeviceOrientation), this.prevOrientTime = 0;
+ }
+ async initWebHidAutoConnect() {
+  let navHid = this.getNavHid();
+  if (!navHid) return;
+  try {
+   let devices = await navHid.getDevices();
+   for (let device of devices)
+    if (this.isSupportedHidDevice(device)) await this.openHidDevice(device);
+   navHid.addEventListener("connect", async (e) => {
+    if (e.device && this.isSupportedHidDevice(e.device)) await this.openHidDevice(e.device), BxEventBus.Stream.emit("gyro.sensor.status", {});
+   }), navHid.addEventListener("disconnect", (e) => {
+    if (e.device && this.openedHidDevices.has(e.device)) {
+     if (this.openedHidDevices.delete(e.device), this.openedHidDevices.size === 0) {
+      if (this.activeControllerName = null, this.activeControllerMethod === "webhid") this.activeControllerMethod = null;
+     }
+     BxEventBus.Stream.emit("gyro.sensor.status", {});
+    }
+   });
+  } catch (e) {
+   BxLogger.warning(this.LOG_TAG, "initWebHidAutoConnect", e);
+  }
+ }
+ isSupportedHidDevice(device) {
+  return HID_FILTERS.some((f) => f.vendorId === device.vendorId && f.productId === device.productId);
+ }
+ async sendSwitchSubcommand(device, subcommand, arg) {
+  let buf = new Uint8Array(11);
+  buf[0] = this.switchPacketNumber++ & 15, buf[1] = 0, buf[2] = 1, buf[3] = 64, buf[4] = 64, buf[5] = 0, buf[6] = 1, buf[7] = 64, buf[8] = 64, buf[9] = subcommand, buf[10] = arg, await device.sendReport(1, buf);
+ }
+ async openHidDevice(device) {
+  if (!device || this.openedHidDevices.has(device)) return;
+  try {
+   if (!device.opened) await device.open();
+   if (device.vendorId === 1356) if (device.productId === 3302 || device.productId === 3570) await device.receiveFeatureReport(5).catch(() => {});
+    else await device.receiveFeatureReport(2).catch(() => {});
+   else if (device.vendorId === 1406) await this.sendSwitchSubcommand(device, 64, 1).catch(() => {}), await this.sendSwitchSubcommand(device, 3, 48).catch(() => {});
+   device.addEventListener("inputreport", this.onHidInputReport), this.openedHidDevices.add(device), this.activeControllerMethod = "webhid", this.activeControllerName = device.productName || "HID Controller", BxLogger.info(this.LOG_TAG, "Opened WebHID gyro controller:", this.activeControllerName);
+  } catch (e) {
+   BxLogger.warning(this.LOG_TAG, "Failed to open WebHID controller", e);
+  }
+ }
+ onHidInputReport = (e) => {
+  let { data, reportId, device } = e;
+  if (!data || !device) return;
+  let gxRaw = 0, gyRaw = 0, gzRaw = 0, axRaw = 0, ayRaw = 0, azRaw = 0, gyroScale = 16.384, accelScale = 8192, valid = !1;
+  if (device.vendorId === 1356) {
+   if (device.productId === 3302 || device.productId === 3570) {
+    if (reportId === 1 && data.byteLength >= 27) gxRaw = data.getInt16(15, !0), gyRaw = data.getInt16(17, !0), gzRaw = data.getInt16(19, !0), axRaw = data.getInt16(21, !0), ayRaw = data.getInt16(23, !0), azRaw = data.getInt16(25, !0), valid = !0;
+    else if (reportId === 49 && data.byteLength >= 28) gxRaw = data.getInt16(16, !0), gyRaw = data.getInt16(18, !0), gzRaw = data.getInt16(20, !0), axRaw = data.getInt16(22, !0), ayRaw = data.getInt16(24, !0), azRaw = data.getInt16(26, !0), valid = !0;
+   } else if (reportId === 1 && data.byteLength >= 24) gxRaw = data.getInt16(12, !0), gyRaw = data.getInt16(14, !0), gzRaw = data.getInt16(16, !0), axRaw = data.getInt16(18, !0), ayRaw = data.getInt16(20, !0), azRaw = data.getInt16(22, !0), valid = !0;
+   else if (reportId === 17 && data.byteLength >= 26) gxRaw = data.getInt16(14, !0), gyRaw = data.getInt16(16, !0), gzRaw = data.getInt16(18, !0), axRaw = data.getInt16(20, !0), ayRaw = data.getInt16(22, !0), azRaw = data.getInt16(24, !0), valid = !0;
+  } else if (device.vendorId === 1406 && reportId === 48 && data.byteLength >= 24) {
+   let swAx = data.getInt16(12, !0), swAy = data.getInt16(14, !0), swAz = data.getInt16(16, !0), swGx = data.getInt16(18, !0), swGy = data.getInt16(20, !0), swGz = data.getInt16(22, !0);
+   gxRaw = -swGy, gyRaw = swGz, gzRaw = -swGx, axRaw = -swAy, ayRaw = swAz, azRaw = -swAx, gyroScale = 14.285, accelScale = 4096, valid = !0;
+  }
+  if (!valid) return;
+  let wx = gxRaw / gyroScale, wy = gyRaw / gyroScale, wz = gzRaw / gyroScale;
+  this.updateBiasAndRates(this.controllerState, -wy, wx, -wz);
+  let ax = axRaw / accelScale, ay = ayRaw / accelScale, az = azRaw / accelScale, norm = Math.sqrt(ax * ax + ay * ay + az * az);
+  if (norm > 0.2) {
+   let smooth = this.controllerState.hasGravity ? 0.55 : 1;
+   if (this.controllerState.gx += (ax / norm - this.controllerState.gx) * smooth, this.controllerState.gy += (ay / norm - this.controllerState.gy) * smooth, this.controllerState.gz += (az / norm - this.controllerState.gz) * smooth, this.controllerState.hasGravity = !0, this.needsRecenter) this.recalibrate(!1);
+  }
+  this.controllerState.lastTimestamp = performance.now();
+ };
+ pollGamepadMotionSensors() {
+  if (this.openedHidDevices.size > 0) return;
+  let gamepads = window.navigator.getGamepads ? window.navigator.getGamepads() : [];
+  for (let gp of gamepads) {
+   if (!gp || !gp.connected) continue;
+   if (GyroManager.isMotionSensorSubGamepad(gp) && gp.axes.length >= 6) {
+    let ax = gp.axes[0] || 0, ay = gp.axes[1] || 0, az = gp.axes[2] || 0, wx = (gp.axes[3] || 0) * 2000, wy = (gp.axes[4] || 0) * 2000, wz = (gp.axes[5] || 0) * 2000;
+    this.updateBiasAndRates(this.controllerState, -wy, wx, -wz);
+    let norm = Math.sqrt(ax * ax + ay * ay + az * az);
+    if (norm > 0.05) {
+     let smooth = this.controllerState.hasGravity ? 0.25 : 1;
+     this.controllerState.gx += (ax / norm - this.controllerState.gx) * smooth, this.controllerState.gy += (ay / norm - this.controllerState.gy) * smooth, this.controllerState.gz += (az / norm - this.controllerState.gz) * smooth, this.controllerState.hasGravity = !0;
+    }
+    if (this.activeControllerMethod = "gamepad", this.activeControllerName = gp.id, this.controllerState.lastTimestamp = performance.now(), this.needsRecenter) this.recalibrate(!1);
+    return;
+   }
+   let pose = gp.pose;
+   if (pose && pose.angularVelocity) {
+    let radToDeg = 180 / Math.PI, wx = (pose.angularVelocity[0] || 0) * radToDeg, wy = (pose.angularVelocity[1] || 0) * radToDeg, wz = (pose.angularVelocity[2] || 0) * radToDeg;
+    this.updateBiasAndRates(this.controllerState, -wy, wx, -wz), this.activeControllerMethod = "gamepad", this.activeControllerName = gp.id, this.controllerState.lastTimestamp = performance.now();
+    return;
+   }
+  }
+ }
+ selectActiveSample() {
+  let now = performance.now(), controllerFresh = this.controllerState.lastTimestamp > 0 && now - this.controllerState.lastTimestamp < 1500, deviceFresh = this.deviceState.lastTimestamp > 0 && now - this.deviceState.lastTimestamp < 1500;
+  if (this.source === "controller") return controllerFresh ? this.controllerState : null;
+  if (this.source === "device") return deviceFresh ? this.deviceState : null;
+  if (controllerFresh) return this.controllerState;
+  if (deviceFresh) return this.deviceState;
+  return null;
+ }
+ computeTiltAngles(sample) {
+  if (sample.hasGravity) {
+   let radToDeg = 180 / Math.PI, yzMag = Math.sqrt(sample.gy * sample.gy + sample.gz * sample.gz), rollDeg = Math.atan2(-sample.gx, Math.max(0.001, yzMag)) * radToDeg, pitchDeg = Math.atan2(-sample.gz, sample.gy) * radToDeg;
+   return { rollDeg, pitchDeg };
+  }
+  if (sample.hasFallbackAngles) return {
+    rollDeg: sample.fallbackRollDeg,
+    pitchDeg: sample.fallbackPitchDeg
+   };
+  return { rollDeg: 0, pitchDeg: 0 };
+ }
+ shouldApplyGyro(baseGamepad) {
+  if (!STATES.isPlaying || this.mode === "off") return !1;
+  if (window.BX_STREAM_SETTINGS?.xCloudPollingMode && window.BX_STREAM_SETTINGS.xCloudPollingMode !== "none") return !1;
+  if (this.isDialogOpen || window.BX_EXPOSED?.disableGamepadPolling) return !1;
+  if (this.mode === "on") return !0;
+  let lt = baseGamepad.LeftTrigger || 0, rt = baseGamepad.RightTrigger || 0, gamepads = window.navigator.getGamepads ? window.navigator.getGamepads() : [];
+  for (let gp of gamepads)
+   if (gp && gp.connected && !GyroManager.isMotionSensorSubGamepad(gp) && gp.buttons.length >= 8) {
+    lt = Math.max(lt, gp.buttons[6]?.value || 0), rt = Math.max(rt, gp.buttons[7]?.value || 0);
+    break;
+   }
+  if (this.mode === "lt") return lt >= 0.2;
+  if (this.mode === "rt") return rt >= 0.2;
+  return !1;
+ }
+ computeStickOutput() {
+  this.pollGamepadMotionSensors();
+  let sample = this.selectActiveSample();
+  if (!sample) return [0, 0];
+  this.outputFromController = sample === this.controllerState;
+  let effectiveBehavior = this.behavior === "auto" ? this.stick === "ls" ? "tilt" : "motion" : this.behavior, effectiveAxes = this.axes === "auto" ? this.stick === "ls" && effectiveBehavior === "tilt" ? "x" : "both" : this.axes, sensX = this.sensitivityX / 100, sensY = this.sensitivityY / 100, dzNorm = this.deadzone / 100, rawX = 0, rawY = 0;
+  if (effectiveBehavior === "tilt") {
+   let { rollDeg, pitchDeg } = this.computeTiltAngles(sample), deltaRoll = unwrapAngleDelta(rollDeg, this.neutralRollDeg), deltaPitch = unwrapAngleDelta(pitchDeg, this.neutralPitchDeg), fullLockDeg = 45;
+   rawX = deltaRoll / 45 * sensX, rawY = deltaPitch / 45 * sensY;
+   let applyTiltDeadzone = (v) => {
+    let abs = Math.abs(v);
+    if (abs <= dzNorm) return 0;
+    return (v < 0 ? -1 : 1) * clamp((abs - dzNorm) / Math.max(0.01, 1 - dzNorm), 0, 1);
+   };
+   rawX = applyTiltDeadzone(rawX), rawY = applyTiltDeadzone(rawY);
+  } else {
+   let horizDegPerSec;
+   if (sample === this.deviceState && sample.hasGravity) horizDegPerSec = sample.aimRightRate * sample.gy + sample.rollRightRate * sample.gz - sample.aimUpRate * sample.gx;
+   else horizDegPerSec = sample.aimRightRate + 0.45 * sample.rollRightRate;
+   let vertDegPerSec = sample.aimUpRate, fullScaleDps = 85;
+   rawX = horizDegPerSec / fullScaleDps * sensX, rawY = vertDegPerSec / fullScaleDps * sensY;
+   let mag = Math.sqrt(rawX * rawX + rawY * rawY), motionNoiseGate = Math.max(0.008, dzNorm * 0.5);
+   if (mag < motionNoiseGate) rawX = 0, rawY = 0;
+   else {
+    let rescaled = 0.08 + (mag - motionNoiseGate) / Math.max(0.01, 1 - motionNoiseGate) * 0.92, scale = Math.min(1, rescaled) / mag;
+    rawX *= scale, rawY *= scale;
+   }
+  }
+  if (effectiveAxes === "x") rawY = 0;
+  else if (effectiveAxes === "y") rawX = 0;
+  if (this.invertX) rawX = -rawX;
+  if (this.invertY) rawY = -rawY;
+  let smoothFactor = effectiveBehavior === "tilt" ? 0.65 : 0.7;
+  return this.smoothX = Math.abs(rawX) < 0.001 && Math.abs(this.smoothX) < 0.005 ? 0 : this.smoothX + (rawX - this.smoothX) * smoothFactor, this.smoothY = Math.abs(rawY) < 0.001 && Math.abs(this.smoothY) < 0.005 ? 0 : this.smoothY + (rawY - this.smoothY) * smoothFactor, [clamp(this.smoothX, -1, 1), clamp(this.smoothY, -1, 1)];
+ }
+ ensureInputChannelHooked() {
+  let channel = window.BX_EXPOSED?.inputChannel;
+  if (channel && typeof channel.sendGamepadInput === "function" && !channel._bxGyroHooked) {
+   let origSend = channel.sendGamepadInput.bind(channel);
+   channel._bxOrigSendGamepadInput = origSend, channel._bxGyroHooked = !0, channel.sendGamepadInput = (timestamp, gamepads) => this.interceptSendGamepadInput(origSend, timestamp, gamepads), BxLogger.info(this.LOG_TAG, "Hooked inputChannel.sendGamepadInput");
+  }
+  return channel;
+ }
+ ensureVirtualControllerRegistered() {
+  if (this.hasSeenGamepadPacket || this.virtualConnectedOnce) return;
+  let streamSession = window.BX_EXPOSED?.streamSession;
+  if (streamSession && typeof streamSession.onVirtualGamepadInput === "function") {
+   this.virtualConnectedOnce = !0;
+   let connectFrame = generateVirtualControllerMapping(0, { VirtualPhysicality: 1 }), idleFrame = generateVirtualControllerMapping(0, { VirtualPhysicality: 0 });
+   streamSession.onVirtualGamepadInput("bxGyro", performance.now(), [connectFrame]), streamSession.onVirtualGamepadInput("bxGyro", performance.now(), [idleFrame]);
+  }
+ }
+ interceptSendGamepadInput(origSend, timestamp, gamepads) {
+  if (!gamepads || gamepads.length === 0) return origSend(timestamp, gamepads);
+  let targetIdx = 0;
+  for (let i = 0;i < gamepads.length; i++)
+   if (gamepads[i].GamepadIndex === 0) {
+    targetIdx = i;
+    break;
+   }
+  let baseGp = gamepads[targetIdx];
+  this.lastBaseGamepad = Object.assign({}, baseGp), this.hasSeenGamepadPacket = !0, this.lastExternalPacketTime = performance.now();
+  let active = this.shouldApplyGyro(this.lastBaseGamepad);
+  if (active && !this.wasApplyingGyro) {
+   if (this.mode === "lt" || this.mode === "rt") this.recalibrate(!1);
+  }
+  if (this.wasApplyingGyro = active, !active) return this.lastSentGx = 0, this.lastSentGy = 0, origSend(timestamp, gamepads);
+  let [gx, gy] = this.computeStickOutput();
+  if (this.lastSentGx = gx, this.lastSentGy = gy, gx === 0 && gy === 0) return origSend(timestamp, gamepads);
+  let modifiedGp = this.buildGyroPacket(baseGp, gx, gy), outGamepads = gamepads.slice();
+  return outGamepads[targetIdx] = modifiedGp, origSend(timestamp, outGamepads);
+ }
+ buildGyroPacket(base, gx, gy) {
+  let packet = Object.assign({}, base);
+  packet.Dirty = !0;
+  let stickBits;
+  if (this.stick === "ls") packet.LeftThumbXAxis = clamp((base.LeftThumbXAxis || 0) + gx, -1, 1), packet.LeftThumbYAxis = clamp((base.LeftThumbYAxis || 0) + gy, -1, 1), stickBits = PHYSICALITY_LEFT_STICK;
+  else packet.RightThumbXAxis = clamp((base.RightThumbXAxis || 0) + gx, -1, 1), packet.RightThumbYAxis = clamp((base.RightThumbYAxis || 0) + gy, -1, 1), stickBits = PHYSICALITY_RIGHT_STICK;
+  if (gx !== 0 || gy !== 0) if (this.outputFromController) packet.PhysicalPhysicality = (base.PhysicalPhysicality || 0) | stickBits;
+   else packet.VirtualPhysicality = (base.VirtualPhysicality || 0) | stickBits;
+  return packet;
+ }
+ resetStickToNeutral() {
+  this.smoothX = 0, this.smoothY = 0;
+  let origSend = this.ensureInputChannelHooked()?._bxOrigSendGamepadInput;
+  if (origSend && (this.lastSentGx !== 0 || this.lastSentGy !== 0)) {
+   this.lastSentGx = 0, this.lastSentGy = 0;
+   let neutralPacket = Object.assign({}, this.lastBaseGamepad, { Dirty: !0 });
+   origSend(performance.now(), [neutralPacket]);
+  }
+ }
+ onAnimationFrame = () => {
+  if (!STATES.isPlaying || this.mode === "off") {
+   this.rafId = null;
+   return;
+  }
+  this.rafId = window.requestAnimationFrame(this.onAnimationFrame);
+  let origSend = this.ensureInputChannelHooked()?._bxOrigSendGamepadInput;
+  if (!origSend) return;
+  let now = performance.now();
+  if (now - this.lastExternalPacketTime < 10) return;
+  let active = this.shouldApplyGyro(this.lastBaseGamepad);
+  if (active && !this.wasApplyingGyro) {
+   if (this.mode === "lt" || this.mode === "rt") this.recalibrate(!1);
+  }
+  if (!active) {
+   if (this.wasApplyingGyro) this.wasApplyingGyro = !1, this.resetStickToNeutral();
+   return;
+  }
+  this.wasApplyingGyro = !0;
+  let [gx, gy] = this.computeStickOutput();
+  if (!(Math.abs(gx - this.lastSentGx) > 0.002 || Math.abs(gy - this.lastSentGy) > 0.002) && !(gx !== 0 || gy !== 0)) return;
+  this.ensureVirtualControllerRegistered();
+  let packet = this.buildGyroPacket(this.lastBaseGamepad, gx, gy);
+  this.lastSentGx = gx, this.lastSentGy = gy, origSend(now, [packet]);
+ };
+ updateRuntimeState() {
+  if (AppInterface && typeof AppInterface.setGyroEnabled === "function") try {
+    AppInterface.setGyroEnabled(this.isEnabled());
+   } catch (e) {}
+  if (STATES.isPlaying && this.mode !== "off") {
+   if (this.source !== "controller") this.startDeviceListeners();
+   else this.stopDeviceListeners();
+   if (this.ensureInputChannelHooked(), this.rafId === null) this.rafId = window.requestAnimationFrame(this.onAnimationFrame);
+  } else if (this.stopDeviceListeners(), this.rafId !== null) window.cancelAnimationFrame(this.rafId), this.rafId = null;
+ }
+ reset() {
+  if (this.stopDeviceListeners(), this.rafId !== null) window.cancelAnimationFrame(this.rafId), this.rafId = null;
+  this.smoothX = 0, this.smoothY = 0, this.lastSentGx = 0, this.lastSentGy = 0, this.wasApplyingGyro = !1, this.hasSeenGamepadPacket = !1, this.virtualConnectedOnce = !1, this.lastBaseGamepad = generateVirtualControllerMapping(0), this.needsRecenter = !0;
+ }
+ setupEvents() {
+  BxEventBus.Stream.on("state.playing", () => {
+   this.hasSeenGamepadPacket = !1, this.virtualConnectedOnce = !1, this.lastBaseGamepad = generateVirtualControllerMapping(0), this.needsRecenter = !0, this.ensureInputChannelHooked(), this.refreshSettings();
+  }), BxEventBus.Stream.on("state.stopped", () => {
+   this.reset();
+  }), BxEventBus.Script.on("dialog.shown", () => {
+   this.isDialogOpen = !0;
+  }), BxEventBus.Script.on("dialog.dismissed", () => {
+   this.isDialogOpen = !1;
+  }), window.addEventListener("gamepadconnected", () => {
+   BxEventBus.Stream.emit("gyro.sensor.status", {});
+  }), window.addEventListener("gamepaddisconnected", () => {
+   BxEventBus.Stream.emit("gyro.sensor.status", {});
+  });
+ }
+}
+var refreshGyroSettings = () => GyroManager.getInstance().refreshSettings();
 class SettingsManager {
  static instance;
  static getInstance = () => SettingsManager.instance ?? (SettingsManager.instance = new SettingsManager);
@@ -4428,6 +5388,36 @@ class SettingsManager {
   },
   "deviceVibration.intensity": {
    onChange: StreamSettings.refreshControllerSettings
+  },
+  "gyro.mode": {
+   onChangeUi: refreshGyroSettings
+  },
+  "gyro.source": {
+   onChangeUi: refreshGyroSettings
+  },
+  "gyro.stick": {
+   onChangeUi: refreshGyroSettings
+  },
+  "gyro.behavior": {
+   onChangeUi: refreshGyroSettings
+  },
+  "gyro.axes": {
+   onChangeUi: refreshGyroSettings
+  },
+  "gyro.sensitivityX": {
+   onChangeUi: refreshGyroSettings
+  },
+  "gyro.sensitivityY": {
+   onChangeUi: refreshGyroSettings
+  },
+  "gyro.deadzone": {
+   onChangeUi: refreshGyroSettings
+  },
+  "gyro.invertX": {
+   onChangeUi: refreshGyroSettings
+  },
+  "gyro.invertY": {
+   onChangeUi: refreshGyroSettings
   },
   "controller.pollingRate": {
    onChange: StreamSettings.refreshControllerSettings
@@ -5123,8 +6113,8 @@ class TouchController {
   });
  }
 }
-var controller_customization_default = "var shareButtonPressed=currentGamepad.buttons[17]?.pressed,shareButtonHandled=!1,xCloudGamepad=$xCloudGamepadVar$;if(currentGamepad.id in window.BX_STREAM_SETTINGS.controllers){let controller=window.BX_STREAM_SETTINGS.controllers[currentGamepad.id];if(controller?.customization){let{mapping,ranges}=controller.customization,pressedButtons={},releasedButtons={},isModified=!1;if(ranges.LeftTrigger){let[from,to]=ranges.LeftTrigger;xCloudGamepad.LeftTrigger=xCloudGamepad.LeftTrigger>to?1:xCloudGamepad.LeftTrigger,xCloudGamepad.LeftTrigger=xCloudGamepad.LeftTrigger<from?0:xCloudGamepad.LeftTrigger}if(ranges.RightTrigger){let[from,to]=ranges.RightTrigger;xCloudGamepad.RightTrigger=xCloudGamepad.RightTrigger>to?1:xCloudGamepad.RightTrigger,xCloudGamepad.RightTrigger=xCloudGamepad.RightTrigger<from?0:xCloudGamepad.RightTrigger}if(ranges.LeftThumb){let[from,to]=ranges.LeftThumb,xAxis=xCloudGamepad.LeftThumbXAxis,yAxis=xCloudGamepad.LeftThumbYAxis,range=Math.abs(Math.sqrt(xAxis*xAxis+yAxis*yAxis)),newRange=range>to?1:range;if(newRange=newRange<from?0:newRange,newRange!==range)xCloudGamepad.LeftThumbXAxis=xAxis*(newRange/range),xCloudGamepad.LeftThumbYAxis=yAxis*(newRange/range)}if(ranges.RightThumb){let[from,to]=ranges.RightThumb,xAxis=xCloudGamepad.RightThumbXAxis,yAxis=xCloudGamepad.RightThumbYAxis,range=Math.abs(Math.sqrt(xAxis*xAxis+yAxis*yAxis)),newRange=range>to?1:range;if(newRange=newRange<from?0:newRange,newRange!==range)xCloudGamepad.RightThumbXAxis=xAxis*(newRange/range),xCloudGamepad.RightThumbYAxis=yAxis*(newRange/range)}if(shareButtonPressed&&\"Share\"in mapping){let targetButton=mapping.Share;if(typeof targetButton===\"string\")pressedButtons[targetButton]=1;shareButtonHandled=!0,delete mapping.Share}let key;for(key in mapping){let mappedKey=mapping[key];if(key===\"LeftStickAxes\"||key===\"RightStickAxes\"){let sourceX,sourceY,targetX,targetY;if(key===\"LeftStickAxes\")sourceX=\"LeftThumbXAxis\",sourceY=\"LeftThumbYAxis\",targetX=\"RightThumbXAxis\",targetY=\"RightThumbYAxis\";else sourceX=\"RightThumbXAxis\",sourceY=\"RightThumbYAxis\",targetX=\"LeftThumbXAxis\",targetY=\"LeftThumbYAxis\";if(typeof mappedKey===\"string\"){let rangeX=xCloudGamepad[sourceX],rangeY=xCloudGamepad[sourceY];if(Math.abs(Math.sqrt(rangeX*rangeX+rangeY*rangeY))>=0.1)pressedButtons[targetX]=rangeX,pressedButtons[targetY]=rangeY}releasedButtons[sourceX]=0,releasedButtons[sourceY]=0,isModified=!0}else if(typeof mappedKey===\"string\"){let pressed=!1,value=0;if(key===\"LeftTrigger\"||key===\"RightTrigger\"){let currentRange=xCloudGamepad[key];if(mappedKey===\"LeftTrigger\"||mappedKey===\"RightTrigger\")pressed=currentRange>=0.1,value=currentRange;else pressed=!0,value=currentRange>=0.9?1:0}else if(xCloudGamepad[key])pressed=!0,value=xCloudGamepad[key];if(pressed)pressedButtons[mappedKey]=value,releasedButtons[key]=0,isModified=!0}else if(mappedKey===!1)pressedButtons[key]=0,isModified=!0}isModified&&Object.assign(xCloudGamepad,releasedButtons,pressedButtons)}}if(shareButtonPressed&&!shareButtonHandled)window.dispatchEvent(new Event(BxEvent.CAPTURE_SCREENSHOT));\n";
-var poll_gamepad_default = "var self=this;if(window.BX_EXPOSED.disableGamepadPolling){self.inputConfiguration.useIntervalWorkerThreadForInput&&self.intervalWorker?self.intervalWorker.scheduleTimer(50):self.pollGamepadssetTimeoutTimerID=window.setTimeout(self.pollGamepads,50);return}var currentGamepad=$gamepadVar$,btnHome=currentGamepad.buttons[16];if(btnHome){if(!self.bxHomeStates)self.bxHomeStates={};let intervalMs=0,hijack=!1;if(btnHome.pressed)if(hijack=!0,intervalMs=16,self.gamepadIsIdle.set(currentGamepad.index,!1),self.bxHomeStates[currentGamepad.index]){let lastTimestamp=self.bxHomeStates[currentGamepad.index].timestamp;if(currentGamepad.timestamp!==lastTimestamp){if(self.bxHomeStates[currentGamepad.index].timestamp=currentGamepad.timestamp,window.BX_EXPOSED.handleControllerShortcut(currentGamepad))self.bxHomeStates[currentGamepad.index].shortcutPressed+=1}}else window.BX_EXPOSED.resetControllerShortcut(currentGamepad.index),self.bxHomeStates[currentGamepad.index]={shortcutPressed:0,timestamp:currentGamepad.timestamp};else if(self.bxHomeStates[currentGamepad.index]){hijack=!0;let info=structuredClone(self.bxHomeStates[currentGamepad.index]);if(self.bxHomeStates[currentGamepad.index]=null,info.shortcutPressed===0){let fakeGamepadMappings=[{GamepadIndex:currentGamepad.index,A:0,B:0,X:0,Y:0,LeftShoulder:0,RightShoulder:0,LeftTrigger:0,RightTrigger:0,View:0,Menu:0,LeftThumb:0,RightThumb:0,DPadUp:0,DPadDown:0,DPadLeft:0,DPadRight:0,Nexus:1,LeftThumbXAxis:0,LeftThumbYAxis:0,RightThumbXAxis:0,RightThumbYAxis:0,PhysicalPhysicality:0,VirtualPhysicality:0,Dirty:!0,Virtual:!1}];intervalMs=currentGamepad.timestamp-info.timestamp>=500?500:100,self.inputSink.onGamepadInput(performance.now()-intervalMs,fakeGamepadMappings)}else intervalMs=window.BX_STREAM_SETTINGS.controllerPollingRate}if(hijack&&intervalMs){self.inputConfiguration.useIntervalWorkerThreadForInput&&self.intervalWorker?self.intervalWorker.scheduleTimer(intervalMs):self.pollGamepadssetTimeoutTimerID=setTimeout(self.pollGamepads,intervalMs);return}}\n";
+var controller_customization_default = "var shareButtonPressed=currentGamepad.buttons[17]?.pressed,shareButtonHandled=!1,xCloudGamepad=$xCloudGamepadVar$;if(currentGamepad.id in window.BX_STREAM_SETTINGS.controllers){let controller=window.BX_STREAM_SETTINGS.controllers[currentGamepad.id];if(controller?.customization){let{mapping,ranges}=controller.customization,pressedButtons={},releasedButtons={},isModified=!1;if(ranges.LeftTrigger){let[from,to]=ranges.LeftTrigger;xCloudGamepad.LeftTrigger=xCloudGamepad.LeftTrigger>to?1:xCloudGamepad.LeftTrigger,xCloudGamepad.LeftTrigger=xCloudGamepad.LeftTrigger<from?0:xCloudGamepad.LeftTrigger}if(ranges.RightTrigger){let[from,to]=ranges.RightTrigger;xCloudGamepad.RightTrigger=xCloudGamepad.RightTrigger>to?1:xCloudGamepad.RightTrigger,xCloudGamepad.RightTrigger=xCloudGamepad.RightTrigger<from?0:xCloudGamepad.RightTrigger}if(ranges.LeftThumb){let[from,to]=ranges.LeftThumb,{LeftThumbXAxis:xAxis,LeftThumbYAxis:yAxis}=xCloudGamepad,range=Math.abs(Math.sqrt(xAxis*xAxis+yAxis*yAxis)),newRange=range>to?1:range;if(newRange=newRange<from?0:newRange,newRange!==range)xCloudGamepad.LeftThumbXAxis=xAxis*(newRange/range),xCloudGamepad.LeftThumbYAxis=yAxis*(newRange/range)}if(ranges.RightThumb){let[from,to]=ranges.RightThumb,{RightThumbXAxis:xAxis,RightThumbYAxis:yAxis}=xCloudGamepad,range=Math.abs(Math.sqrt(xAxis*xAxis+yAxis*yAxis)),newRange=range>to?1:range;if(newRange=newRange<from?0:newRange,newRange!==range)xCloudGamepad.RightThumbXAxis=xAxis*(newRange/range),xCloudGamepad.RightThumbYAxis=yAxis*(newRange/range)}if(shareButtonPressed&&\"Share\"in mapping){let targetButton=mapping.Share;if(typeof targetButton===\"string\")pressedButtons[targetButton]=1;shareButtonHandled=!0,delete mapping.Share}let key;for(key in mapping){let mappedKey=mapping[key];if(key===\"LeftStickAxes\"||key===\"RightStickAxes\"){let sourceX,sourceY,targetX,targetY;if(key===\"LeftStickAxes\")sourceX=\"LeftThumbXAxis\",sourceY=\"LeftThumbYAxis\",targetX=\"RightThumbXAxis\",targetY=\"RightThumbYAxis\";else sourceX=\"RightThumbXAxis\",sourceY=\"RightThumbYAxis\",targetX=\"LeftThumbXAxis\",targetY=\"LeftThumbYAxis\";if(typeof mappedKey===\"string\"){let rangeX=xCloudGamepad[sourceX],rangeY=xCloudGamepad[sourceY];if(Math.abs(Math.sqrt(rangeX*rangeX+rangeY*rangeY))>=0.1)pressedButtons[targetX]=rangeX,pressedButtons[targetY]=rangeY}releasedButtons[sourceX]=0,releasedButtons[sourceY]=0,isModified=!0}else if(typeof mappedKey===\"string\"){let pressed=!1,value=0;if(key===\"LeftTrigger\"||key===\"RightTrigger\"){let currentRange=xCloudGamepad[key];if(mappedKey===\"LeftTrigger\"||mappedKey===\"RightTrigger\")pressed=currentRange>=0.1,value=currentRange;else pressed=!0,value=currentRange>=0.9?1:0}else if(xCloudGamepad[key])pressed=!0,value=xCloudGamepad[key];if(pressed)pressedButtons[mappedKey]=value,releasedButtons[key]=0,isModified=!0}else if(mappedKey===!1)pressedButtons[key]=0,isModified=!0}isModified&&Object.assign(xCloudGamepad,releasedButtons,pressedButtons)}}if(shareButtonPressed&&!shareButtonHandled)window.dispatchEvent(new Event(BxEvent.CAPTURE_SCREENSHOT));\n";
+var poll_gamepad_default = "var self=this;if(window.BX_EXPOSED.disableGamepadPolling){self.inputConfiguration.useIntervalWorkerThreadForInput&&self.intervalWorker?self.intervalWorker.scheduleTimer(50):self.pollGamepadssetTimeoutTimerID=window.setTimeout(self.pollGamepads,50);return}var currentGamepad=$gamepadVar$;if(window.BX_EXPOSED.isGyroActive&&window.BX_EXPOSED.isGyroActive())self.gamepadIsIdle.set(currentGamepad.index,!1);var btnHome=currentGamepad.buttons[16];if(btnHome){if(!self.bxHomeStates)self.bxHomeStates={};let intervalMs=0,hijack=!1;if(btnHome.pressed)if(hijack=!0,intervalMs=16,self.gamepadIsIdle.set(currentGamepad.index,!1),self.bxHomeStates[currentGamepad.index]){let lastTimestamp=self.bxHomeStates[currentGamepad.index].timestamp;if(currentGamepad.timestamp!==lastTimestamp){if(self.bxHomeStates[currentGamepad.index].timestamp=currentGamepad.timestamp,window.BX_EXPOSED.handleControllerShortcut(currentGamepad))self.bxHomeStates[currentGamepad.index].shortcutPressed+=1}}else window.BX_EXPOSED.resetControllerShortcut(currentGamepad.index),self.bxHomeStates[currentGamepad.index]={shortcutPressed:0,timestamp:currentGamepad.timestamp};else if(self.bxHomeStates[currentGamepad.index]){hijack=!0;let info=structuredClone(self.bxHomeStates[currentGamepad.index]);if(self.bxHomeStates[currentGamepad.index]=null,info.shortcutPressed===0){let fakeGamepadMappings=[{GamepadIndex:currentGamepad.index,A:0,B:0,X:0,Y:0,LeftShoulder:0,RightShoulder:0,LeftTrigger:0,RightTrigger:0,View:0,Menu:0,LeftThumb:0,RightThumb:0,DPadUp:0,DPadDown:0,DPadLeft:0,DPadRight:0,Nexus:1,LeftThumbXAxis:0,LeftThumbYAxis:0,RightThumbXAxis:0,RightThumbYAxis:0,PhysicalPhysicality:0,VirtualPhysicality:0,Dirty:!0,Virtual:!1}];intervalMs=currentGamepad.timestamp-info.timestamp>=500?500:100,self.inputSink.onGamepadInput(performance.now()-intervalMs,fakeGamepadMappings)}else intervalMs=window.BX_STREAM_SETTINGS.controllerPollingRate}if(hijack&&intervalMs){self.inputConfiguration.useIntervalWorkerThreadForInput&&self.intervalWorker?self.intervalWorker.scheduleTimer(intervalMs):self.pollGamepadssetTimeoutTimerID=setTimeout(self.pollGamepads,intervalMs);return}}\n";
 var expose_stream_session_default = 'var self=this;window.BX_EXPOSED.streamSession=self;var orgSetMicrophoneState=self.setMicrophoneState.bind(self);self.setMicrophoneState=(state)=>{orgSetMicrophoneState(state),window.BxEventBus.Stream.emit("microphone.state.changed",{state})};window.dispatchEvent(new Event(BxEvent.STREAM_SESSION_READY));var updateDimensionsStr=self.updateDimensions.toString();if(updateDimensionsStr.startsWith("function "))updateDimensionsStr=updateDimensionsStr.substring(9);var renderTargetVar=updateDimensionsStr.match(/if\\((\\w+)\\){/)[1];updateDimensionsStr=updateDimensionsStr.replaceAll(renderTargetVar+".scroll","scroll");updateDimensionsStr=updateDimensionsStr.replace(`if(${renderTargetVar}){`,`\nif (${renderTargetVar}) {\nconst scrollWidth = ${renderTargetVar}.dataset.width ? parseInt(${renderTargetVar}.dataset.width) : ${renderTargetVar}.scrollWidth;\nconst scrollHeight = ${renderTargetVar}.dataset.height ? parseInt(${renderTargetVar}.dataset.height) : ${renderTargetVar}.scrollHeight;\n`);eval(`this.updateDimensions = function ${updateDimensionsStr}`);\n';
 var game_card_icons_default = `var supportedInputIcons=$supportedInputIcons$,productId=$productId$;supportedInputIcons.shift();if(window.BX_EXPOSED.localCoOpManager.isSupported(productId))supportedInputIcons.push(window.BX_EXPOSED.createReactLocalCoOpIcon);`;
 var local_co_op_enable_default = 'this.orgOnGamepadChanged=this.onGamepadChanged;this.orgOnGamepadInput=this.onGamepadInput;var match,onGamepadChangedStr=this.onGamepadChanged.toString();if(onGamepadChangedStr.startsWith("function "))onGamepadChangedStr=onGamepadChangedStr.substring(9);onGamepadChangedStr=onGamepadChangedStr.replaceAll("0","arguments[1]");eval(`this.patchedOnGamepadChanged = function ${onGamepadChangedStr}`);var onGamepadInputStr=this.onGamepadInput.toString();if(onGamepadInputStr.startsWith("function "))onGamepadInputStr=onGamepadInputStr.substring(9);match=onGamepadInputStr.match(/(\\w+\\.GamepadIndex)/);if(match){let gamepadIndexVar=match[0];onGamepadInputStr=onGamepadInputStr.replace("this.gamepadStates.get(",`this.gamepadStates.get(${gamepadIndexVar},`),eval(`this.patchedOnGamepadInput = function ${onGamepadInputStr}`),BxLogger.info("supportLocalCoOp","✅ Successfully patched local co-op support")}else BxLogger.error("supportLocalCoOp","❌ Unable to patch local co-op support");this.toggleLocalCoOp=(enable)=>{BxLogger.info("toggleLocalCoOp",enable?"Enabled":"Disabled"),this.onGamepadChanged=enable?this.patchedOnGamepadChanged:this.orgOnGamepadChanged,this.onGamepadInput=enable?this.patchedOnGamepadInput:this.orgOnGamepadInput;let gamepads=window.navigator.getGamepads();for(let gamepad of gamepads){if(!gamepad?.connected)continue;if(gamepad.id.includes("Better xCloud"))continue;gamepad._noToast=!0,window.dispatchEvent(new GamepadEvent("gamepaddisconnected",{gamepad})),window.dispatchEvent(new GamepadEvent("gamepadconnected",{gamepad}))}};window.BX_EXPOSED.toggleLocalCoOp=this.toggleLocalCoOp.bind(null);\n';
@@ -6126,7 +7116,10 @@ var SHORTCUT_ACTIONS = {
   }
  } : {},
  [t("controller")]: {
-  "controller.xbox.press": [t("button-xbox"), t("press")]
+  "controller.xbox.press": [t("button-xbox"), t("press")],
+  "gyro.toggle": [t("gyroscope"), t("toggle")],
+  "gyro.stick.switch": [t("gyroscope"), t("gyro-switch-stick")],
+  "gyro.recalibrate": [t("gyroscope"), t("gyro-recenter")]
  },
  ...AppInterface ? {
   [t("device")]: {
@@ -6423,9 +7416,7 @@ class ControllerCustomizationsManagerDialog extends BaseProfileManagerDialog {
    steps: 10,
    suffix: "%",
    exactTicks: 20,
-   customTextValue: (value) => {
-    return value = parseInt(value), value === 0 ? t("off") : value + "%";
-   }
+   customTextValue: (value) => (value = parseInt(value), value === 0 ? t("off") : value + "%")
   }, boundUpdatePreset)), createSettingRow(t("left-trigger-range"), this.$leftTriggerRange = BxDualNumberStepper.create("left-trigger-range", blankSettings.leftTriggerRange, params, boundUpdatePreset)), createSettingRow(t("right-trigger-range"), this.$rightTriggerRange = BxDualNumberStepper.create("right-trigger-range", blankSettings.rightTriggerRange, params, boundUpdatePreset)), createSettingRow(t("left-stick-deadzone"), this.$leftStickDeadzone = BxDualNumberStepper.create("left-stick-deadzone", blankSettings.leftStickDeadzone, params, boundUpdatePreset)), createSettingRow(t("right-stick-deadzone"), this.$rightStickDeadzone = BxDualNumberStepper.create("right-stick-deadzone", blankSettings.rightStickDeadzone, params, boundUpdatePreset)));
  }
  startDetectingButton() {
@@ -6690,7 +7681,7 @@ class SuggestionsSetting {
   else if (deviceType === "android-tv") SuggestionsSetting.addDefaultSuggestedSetting.call(this, "touchController.mode", "off");
   SuggestionsSetting.generateDefaultSuggestedSettings.call(this);
   let $suggestedSettings = CE("div", { class: "bx-suggest-wrapper" }), $select = CE("select", !1, hasRecommendedSettings && CE("option", { value: "recommended" }, t("recommended")), !hasRecommendedSettings && CE("option", { value: "highest" }, t("highest-quality")), CE("option", { value: "default" }, t("default")), CE("option", { value: "lowest" }, t("lowest-quality")));
-  $select.addEventListener("input", (e2) => {
+  $select.addEventListener("input", (e) => {
    let profile = $select.value;
    removeChildElements($suggestedSettings);
    let fragment = document.createDocumentFragment(), note;
@@ -7563,6 +8554,79 @@ class SettingsDialog extends NavigationDialog {
     pref: "deviceVibration.intensity",
     unsupported: !STATES.browser.capabilities.deviceVibration
    }]
+  },
+  {
+   requiredVariants: "full",
+   group: "gyro",
+   label: t("gyroscope"),
+   unsupported: !GyroManager.getInstance().hasDeviceSensorSupport() && !GyroManager.getInstance().hasWebHidSupport() && !("getGamepads" in window.navigator),
+   unsupportedNote: "⚠️ " + t("browser-unsupported-feature"),
+   items: [
+    ($parent) => {
+     let gyroManager = GyroManager.getInstance(), $statusText = CE("div", {
+      style: "font-size: 0.85rem; opacity: 0.85; margin-bottom: 8px; line-height: 1.4;"
+     }), updateStatusText = () => {
+      let status = gyroManager.getSensorStatus(), devIcon = status.deviceReceiving ? "✅" : status.deviceApiSupported ? "⚪" : "❌", ctrlIcon = status.controllerGyroActive ? "✅" : status.controllerGamepadDetected ? "⚪" : "❌", ctrlDetail = "";
+      if (status.controllerName) ctrlDetail = ` (${status.controllerName.replace(/\s*\(.*?\)\s*/g, "").trim()})`;
+      $statusText.textContent = `📱 ${t("device")}: ${devIcon}   |   🎮 ${t("controller")}: ${ctrlIcon}${ctrlDetail}`;
+     };
+     updateStatusText(), BxEventBus.Stream.on("gyro.sensor.status", updateStatusText), this.onMountedCallbacks.push(updateStatusText);
+     let buttons = [
+      createButton({
+       label: t("gyro-recenter"),
+       icon: BxIcon.REFRESH,
+       style: 64 | 128,
+       onClick: () => {
+        gyroManager.recalibrate(!0);
+       }
+      })
+     ];
+     if (gyroManager.hasWebHidSupport()) buttons.push(createButton({
+       label: t("gyro-connect-controller"),
+       icon: BxIcon.CONTROLLER,
+       style: 1 | 64 | 128,
+       onClick: async () => {
+        await gyroManager.requestControllerHidAccess(), updateStatusText();
+       }
+      }));
+     let $box = CE("div", {
+      class: "bx-settings-row",
+      style: "display: flex; flex-direction: column; gap: 6px;",
+      _nearby: { orientation: "vertical" }
+     }, $statusText, ...buttons);
+     $parent.appendChild($box);
+    },
+    {
+     pref: "gyro.mode",
+     multiLines: !0,
+     onCreated: (_setting, $control) => {
+      $control.addEventListener("input", () => {
+       if (getStreamPref("gyro.mode") !== "off") GyroManager.getInstance().requestDevicePermissions();
+      });
+     }
+    },
+    {
+     pref: "gyro.stick",
+     multiLines: !0
+    },
+    {
+     pref: "gyro.source",
+     multiLines: !0
+    },
+    {
+     pref: "gyro.behavior",
+     multiLines: !0
+    },
+    {
+     pref: "gyro.axes",
+     multiLines: !0
+    },
+    "gyro.sensitivityX",
+    "gyro.sensitivityY",
+    "gyro.deadzone",
+    "gyro.invertX",
+    "gyro.invertY"
+   ]
   }
  ];
  TAB_MKB_ITEMS = [
@@ -7749,10 +8813,10 @@ class SettingsDialog extends NavigationDialog {
      this.onGlobalSettingChanged(e);
     });
    else if (pref === "userAgent.profile") $control = SettingElement.fromPref("userAgent.profile", (e) => {
-     let value = e.target.value, isCustom = value === "custom", userAgent2 = UserAgent.get(value);
+     let value = e.target.value, isCustom = value === "custom", userAgent = UserAgent.get(value);
      UserAgent.updateStorage(value);
      let $inp = $control.nextElementSibling;
-     $inp.value = userAgent2, $inp.readOnly = !isCustom, $inp.disabled = !isCustom, !e.target.disabled && this.onGlobalSettingChanged(e);
+     $inp.value = userAgent, $inp.readOnly = !isCustom, $inp.disabled = !isCustom, !e.target.disabled && this.onGlobalSettingChanged(e);
     });
    else if ($control = this.settingsManager.getElement(pref, setting.params), settingTab.group === "global") $control.addEventListener("input", this.onGlobalSettingChanged);
    if ($control instanceof HTMLSelectElement) $control = BxSelectElement.create($control);
@@ -7850,9 +8914,7 @@ class SettingsDialog extends NavigationDialog {
    class: "bx-settings-tabs-container",
    _nearby: {
     orientation: "vertical",
-    focus: () => {
-     return this.dialogManager.focus($tabs);
-    },
+    focus: () => this.dialogManager.focus($tabs),
     loop: (direction) => {
      if (direction === 1 || direction === 3) return this.focusVisibleTab(direction === 1 ? "last" : "first"), !0;
      return !1;
@@ -8229,6 +9291,15 @@ class ShortcutHandler {
    case "controller.xbox.press":
     VirtualControllerShortcut.pressXboxButton();
     break;
+   case "gyro.toggle":
+    GyroManager.getInstance().toggle();
+    break;
+   case "gyro.stick.switch":
+    GyroManager.getInstance().switchTargetStick();
+    break;
+   case "gyro.recalibrate":
+    GyroManager.getInstance().recalibrate(!0);
+    break;
   }
  }
 }
@@ -8287,18 +9358,18 @@ class LocalCoOpManager {
 var BxExposed = {
  getTitleInfo: () => STATES.currentStream.titleInfo,
  modifyPreloadedState: (state) => {
-  let LOG_TAG3 = "PreloadState";
+  let LOG_TAG = "PreloadState";
   try {
    state.appContext.requestInfo.userAgent = window.navigator.userAgent;
   } catch (e) {
-   BxLogger.error(LOG_TAG3, e);
+   BxLogger.error(LOG_TAG, e);
   }
   try {
    for (let exp in FeatureGates)
     state.experiments.overrideFeatureGates[exp.toLocaleLowerCase()] = FeatureGates[exp];
    BxLogger.info("state.experiments", state.experiments);
   } catch (e) {
-   BxLogger.error(LOG_TAG3, e);
+   BxLogger.error(LOG_TAG, e);
   }
   try {
    let sigls = state.xcloud.sigls;
@@ -8307,27 +9378,27 @@ var BxExposed = {
     if (siglId in sigls) {
      let allGames = sigls[siglId].data.products;
      customList = customList.filter((id) => allGames.includes(id)), sigls["9c86f07a-f3e8-45ad-82a0-a1f759597059"]?.data.products.push(...customList);
-    } else BxLogger.warning(LOG_TAG3, "Sigl not found: " + siglId);
+    } else BxLogger.warning(LOG_TAG, "Sigl not found: " + siglId);
    }
   } catch (e) {
-   BxLogger.error(LOG_TAG3, e);
+   BxLogger.error(LOG_TAG, e);
   }
   try {
    let sigls = state.xcloud.sigls;
    if (BX_FLAGS.ForceNativeMkbTitles) sigls["8fa264dd-124f-4af3-97e8-596fcdf4b486"]?.data.products.push(...BX_FLAGS.ForceNativeMkbTitles);
   } catch (e) {
-   BxLogger.error(LOG_TAG3, e);
+   BxLogger.error(LOG_TAG, e);
   }
   try {
    state.uhf.headerMode = "Off", state.uhf.footerMode = "Off";
   } catch (e) {
-   BxLogger.error(LOG_TAG3, e);
+   BxLogger.error(LOG_TAG, e);
   }
   try {
    let xCloud = state.xcloud.authentication.authStatusByStrategy.XCloud;
    if (xCloud.type === 3 && xCloud.error.type === "UnsupportedMarketError") window.stop(), window.location.href = "https://www.xbox.com/en-US/play";
   } catch (e) {
-   BxLogger.error(LOG_TAG3, e);
+   BxLogger.error(LOG_TAG, e);
   }
   return state;
  },
@@ -8405,9 +9476,10 @@ var BxExposed = {
   return reactCE("svg", { xmlns: "http://www.w3.org/2000/svg", width: "1em", height: "1em", viewBox: "0 0 32 32", "fill-rule": "evenodd", "stroke-linecap": "round", "stroke-linejoin": "round", ...attrs }, reactCE("g", null, reactCE("path", { d: "M24.272 11.165h-3.294l-3.14 3.564c-.391.391-.922.611-1.476.611a2.1 2.1 0 0 1-2.087-2.088 2.09 2.09 0 0 1 .031-.362l1.22-6.274a3.89 3.89 0 0 1 3.81-3.206h6.57c1.834 0 3.439 1.573 3.833 3.295l1.205 6.185a2.09 2.09 0 0 1 .031.362 2.1 2.1 0 0 1-2.087 2.088c-.554 0-1.085-.22-1.476-.611l-3.14-3.564", fill: "none", stroke: "#fff", "stroke-width": "2" }), reactCE("circle", { cx: "22.625", cy: "5.874", r: ".879" }), reactCE("path", { d: "M11.022 24.415H7.728l-3.14 3.564c-.391.391-.922.611-1.476.611a2.1 2.1 0 0 1-2.087-2.088 2.09 2.09 0 0 1 .031-.362l1.22-6.274a3.89 3.89 0 0 1 3.81-3.206h6.57c1.834 0 3.439 1.573 3.833 3.295l1.205 6.185a2.09 2.09 0 0 1 .031.362 2.1 2.1 0 0 1-2.087 2.088c-.554 0-1.085-.22-1.476-.611l-3.14-3.564", fill: "none", stroke: "#fff", "stroke-width": "2" }), reactCE("circle", { cx: "9.375", cy: "19.124", r: ".879" })));
  },
  hasCustomTouchControl: TouchController.hasCustomControl,
- hasCustomNativeMkb: (productId) => {
-  return BX_FLAGS.ForceNativeMkbTitles?.includes(productId);
- }
+ hasCustomNativeMkb: (productId) => BX_FLAGS.ForceNativeMkbTitles?.includes(productId),
+ isGyroActive: () => GyroManager.getInstance().isActivelyPolling(),
+ feedGyroData: (data) => GyroManager.getInstance().feedExternalSample(data),
+ toggleGyro: (force) => GyroManager.getInstance().toggle(force)
 };
 class XhomeInterceptor {
  static consoleAddrs = {};
@@ -8804,9 +9876,7 @@ class RemotePlayManager {
     Authorization: `Bearer ${this.XHOME_TOKEN}`
    }
   };
-  this.regions.sort((a, b) => {
-   return a.isDefault ? -1 : 0;
-  });
+  this.regions.sort((a, b) => a.isDefault ? -1 : 0);
   for (let region of this.regions)
    try {
     let request = new Request(`${region.baseUri}/v6/servers/home?mr=50`, options), json = await (await fetch(request)).json();
@@ -9245,14 +10315,12 @@ function updateIceCandidates(candidates, options) {
    let firstIp = a.ip, secondIp = b.ip;
    return !firstIp.includes(":") && secondIp.includes(":") ? 1 : -1;
   });
- let newCandidates = [], foundation = 1, newCandidate = (candidate) => {
-  return {
-   candidate,
-   messageType: "iceCandidate",
-   sdpMLineIndex: "0",
-   sdpMid: "0"
-  };
- };
+ let newCandidates = [], foundation = 1, newCandidate = (candidate) => ({
+  candidate,
+  messageType: "iceCandidate",
+  sdpMLineIndex: "0",
+  sdpMid: "0"
+ });
  if (lst.forEach((item2) => {
   item2.foundation = foundation, item2.priority = foundation == 1 ? 2130706431 : 1, newCandidates.push(newCandidate(`a=candidate:${item2.foundation} 1 UDP ${item2.priority} ${item2.ip} ${item2.port} ${item2.the_rest}`)), ++foundation;
  }), options.consoleAddrs)
@@ -9273,11 +10341,11 @@ async function patchIceCandidates(request, consoleAddrs) {
 function interceptHttpRequests() {
  let BLOCKED_URLS = [];
  if (getGlobalPref("block.tracking")) clearAllLogs(), BLOCKED_URLS.push("https://arc.msn.com", "https://browser.events.data.microsoft.com", "https://dc.services.visualstudio.com", "https://2c06dea3f26c40c69b8456d319791fd0@o427368.ingest.sentry.io", "https://mscom.demdex.net");
- let blockFeatures2 = getGlobalPref("block.features");
- if (blockFeatures2.includes("chat")) BLOCKED_URLS.push("https://xblmessaging.xboxlive.com/network/xbox/users/me/inbox");
- if (blockFeatures2.includes("friends")) BLOCKED_URLS.push("https://peoplehub.xboxlive.com/users/me/people/social", "https://peoplehub.xboxlive.com/users/me/people/recommendations");
+ let blockFeatures = getGlobalPref("block.features");
+ if (blockFeatures.includes("chat")) BLOCKED_URLS.push("https://xblmessaging.xboxlive.com/network/xbox/users/me/inbox");
+ if (blockFeatures.includes("friends")) BLOCKED_URLS.push("https://peoplehub.xboxlive.com/users/me/people/social", "https://peoplehub.xboxlive.com/users/me/people/recommendations");
  if (blockAllNotifications()) BLOCKED_URLS.push("https://notificationinbox.xboxlive.com/");
- let xhrPrototype = XMLHttpRequest.prototype, nativeXhrOpen = xhrPrototype.open, nativeXhrSend = xhrPrototype.send;
+ let xhrPrototype = XMLHttpRequest.prototype, { open: nativeXhrOpen, send: nativeXhrSend } = xhrPrototype;
  xhrPrototype.open = function(method, url) {
   return this._url = url, nativeXhrOpen.apply(this, arguments);
  }, xhrPrototype.send = function(...arg) {
@@ -9898,6 +10966,35 @@ class TouchControlAction extends BaseGameBarAction {
   this.$content.dataset.activated = "false";
  }
 }
+class GyroAction extends BaseGameBarAction {
+ $content;
+ constructor() {
+  super();
+  let $btnOff = createButton({
+   style: 8,
+   icon: BxIcon.GYROSCOPE_OFF,
+   title: `${t("gyroscope")} (${t("off")})`,
+   onClick: this.onClick
+  }), $btnOn = createButton({
+   style: 8,
+   icon: BxIcon.GYROSCOPE,
+   title: `${t("gyroscope")} (${t("on")})`,
+   onClick: this.onClick,
+   classes: ["bx-activated"]
+  });
+  this.$content = CE("div", !1, $btnOff, $btnOn), this.$content.addEventListener("contextmenu", (e) => {
+   e.preventDefault(), GyroManager.getInstance().switchTargetStick();
+  }), BxEventBus.Stream.on("gyro.state.changed", (payload) => {
+   this.$content.dataset.activated = payload.enabled.toString();
+  });
+ }
+ onClick = (e) => {
+  super.onClick(e), GyroManager.getInstance().toggle();
+ };
+ reset() {
+  this.$content.dataset.activated = GyroManager.getInstance().isEnabled().toString();
+ }
+}
 class MicrophoneAction extends BaseGameBarAction {
  $content;
  constructor() {
@@ -10010,6 +11107,7 @@ class GameBar {
   if (this.actions = [
    new ScreenshotAction,
    ...STATES.userAgent.capabilities.touch && getGlobalPref("touchController.mode") !== "off" ? [new TouchControlAction] : [],
+   new GyroAction,
    new SpeakerAction,
    new RendererAction,
    new MicrophoneAction,
@@ -10142,9 +11240,9 @@ class GameTile {
    let $elm = e.element;
    if (($elm.className || "").includes("MruGameCard")) {
     let $ol = $elm.closest("ol");
-    if ($ol && !$ol.hasWaitTime) $ol.hasWaitTime = !0, $ol.querySelectorAll("button[class*=MruGameCard]").forEach(($elm2) => {
-      let productId = GameTile.findProductId($elm2);
-      productId && GameTile.showWaitTime($elm2, productId);
+    if ($ol && !$ol.hasWaitTime) $ol.hasWaitTime = !0, $ol.querySelectorAll("button[class*=MruGameCard]").forEach(($elm) => {
+      let productId = GameTile.findProductId($elm);
+      productId && GameTile.showWaitTime($elm, productId);
      });
    } else {
     let productId = GameTile.findProductId($elm);
@@ -10276,8 +11374,10 @@ class DeviceVibrationManager {
 class StreamUiHandler {
  static $btnStreamSettings;
  static $btnStreamStats;
+ static $btnGyro;
  static $btnRefresh;
  static $btnHome;
+ static gyroListenerBound = !1;
  static cloneStreamHudButton($btnOrg, label, svgIcon) {
   if (!$btnOrg) return null;
   let $container = $btnOrg.cloneNode(!0), timeout;
@@ -10341,16 +11441,29 @@ class StreamUiHandler {
     let btnStreamStatsOn = !streamStats.isHidden() && !streamStats.isGlancing();
     $btnStreamStats.classList.toggle("bx-stream-menu-button-on", btnStreamStatsOn);
    }), StreamUiHandler.$btnStreamStats = $btnStreamStats;
-  let $btnParent = $orgButton.parentElement;
+  let $btnParent = $orgButton.parentElement, $btnGyro = StreamUiHandler.$btnGyro;
+  if (typeof $btnGyro > "u") {
+   if ($btnGyro = StreamUiHandler.cloneStreamHudButton($orgButton, t("gyroscope"), BxIcon.GYROSCOPE), $btnGyro?.addEventListener("click", async (e) => {
+    hideGripHandle(), e.preventDefault();
+    let enabled = await GyroManager.getInstance().toggle();
+    $btnGyro.classList.toggle("bx-stream-menu-button-on", enabled);
+   }), $btnGyro?.addEventListener("contextmenu", (e) => {
+    e.preventDefault(), GyroManager.getInstance().switchTargetStick();
+   }), StreamUiHandler.$btnGyro = $btnGyro, !StreamUiHandler.gyroListenerBound)
+    StreamUiHandler.gyroListenerBound = !0, BxEventBus.Stream.on("gyro.state.changed", (payload) => {
+     StreamUiHandler.$btnGyro?.classList.toggle("bx-stream-menu-button-on", payload.enabled);
+    });
+  }
   if ($btnStreamSettings && $btnStreamStats) {
    let btnStreamStatsOn = !streamStats.isHidden() && !streamStats.isGlancing();
-   $btnStreamStats.classList.toggle("bx-stream-menu-button-on", btnStreamStatsOn), $btnParent.insertBefore($btnStreamStats, $btnParent.lastElementChild), $btnParent.insertBefore($btnStreamSettings, $btnStreamStats);
+   if ($btnStreamStats.classList.toggle("bx-stream-menu-button-on", btnStreamStatsOn), $btnParent.insertBefore($btnStreamStats, $btnParent.lastElementChild), $btnGyro) $btnGyro.classList.toggle("bx-stream-menu-button-on", GyroManager.getInstance().isEnabled()), $btnParent.insertBefore($btnGyro, $btnStreamStats), $btnParent.insertBefore($btnStreamSettings, $btnGyro);
+   else $btnParent.insertBefore($btnStreamSettings, $btnStreamStats);
   }
   let $dotsButton = $btnParent.lastElementChild;
   $dotsButton.parentElement.insertBefore($dotsButton, $dotsButton.parentElement.firstElementChild);
  }
  static reset() {
-  StreamUiHandler.$btnStreamSettings = void 0, StreamUiHandler.$btnStreamStats = void 0, StreamUiHandler.$btnRefresh = void 0, StreamUiHandler.$btnHome = void 0;
+  StreamUiHandler.$btnStreamSettings = void 0, StreamUiHandler.$btnStreamStats = void 0, StreamUiHandler.$btnGyro = void 0, StreamUiHandler.$btnRefresh = void 0, StreamUiHandler.$btnHome = void 0;
  }
 }
 function handleDeepLink() {
@@ -10504,7 +11617,7 @@ BxEventBus.Stream.on("dataChannelCreated", (payload) => {
 });
 function unload() {
  if (!STATES.isPlaying) return;
- BxLogger.warning("Unloading"), KeyboardShortcutHandler.getInstance().stop(), EmulatedMkbHandler.getInstance()?.destroy(), NativeMkbHandler.getInstance()?.destroy(), DeviceVibrationManager.getInstance()?.reset(), STATES.currentStream.streamPlayerManager?.destroy(), STATES.isPlaying = !1, STATES.currentStream = {}, window.BX_EXPOSED.shouldShowSensorControls = !1, window.BX_EXPOSED.stopTakRendering = !1, NavigationDialogManager.getInstance().hide(), StreamStats.getInstance().destroy(), StreamBadges.getInstance().destroy(), MouseCursorHider.getInstance()?.stop(), TouchController.reset(), GameBar.getInstance()?.disable(), BxEventBus.Stream.emit("xboxTitleId.changed", { id: -1 });
+ BxLogger.warning("Unloading"), KeyboardShortcutHandler.getInstance().stop(), EmulatedMkbHandler.getInstance()?.destroy(), NativeMkbHandler.getInstance()?.destroy(), DeviceVibrationManager.getInstance()?.reset(), GyroManager.getInstance()?.reset(), STATES.currentStream.streamPlayerManager?.destroy(), STATES.isPlaying = !1, STATES.currentStream = {}, window.BX_EXPOSED.shouldShowSensorControls = !1, window.BX_EXPOSED.stopTakRendering = !1, NavigationDialogManager.getInstance().hide(), StreamStats.getInstance().destroy(), StreamBadges.getInstance().destroy(), MouseCursorHider.getInstance()?.stop(), TouchController.reset(), GameBar.getInstance()?.disable(), BxEventBus.Stream.emit("xboxTitleId.changed", { id: -1 });
 }
 BxEventBus.Stream.on("state.stopped", unload);
 window.addEventListener("pagehide", (e) => {
@@ -10519,7 +11632,7 @@ function main() {
   BX_FLAGS.ForceNativeMkbTitles.push(...customList);
  }
  if (StreamSettings.setup(), patchRtcPeerConnection(), patchRtcCodecs(), interceptHttpRequests(), patchVideoApi(), patchCanvasContext(), AppInterface && patchPointerLockApi(), getGlobalPref("audio.volume.booster.enabled") && patchAudioContext(), getGlobalPref("block.tracking")) patchMeControl(), disableAdobeAudienceManager();
- if (addCss(), StreamStatsCollector.setupEvents(), StreamBadges.setupEvents(), StreamStats.setupEvents(), WebGPUPlayer.prepare(), STATES.userAgent.capabilities.touch && TouchController.updateCustomList(), DeviceVibrationManager.getInstance(), BX_FLAGS.CheckForUpdate && checkForUpdate(), Patcher.init(), disablePwa(), getGlobalPref("touchController.mode") === "all") TouchController.setup();
+ if (addCss(), StreamStatsCollector.setupEvents(), StreamBadges.setupEvents(), StreamStats.setupEvents(), WebGPUPlayer.prepare(), STATES.userAgent.capabilities.touch && TouchController.updateCustomList(), DeviceVibrationManager.getInstance(), GyroManager.getInstance(), BX_FLAGS.CheckForUpdate && checkForUpdate(), Patcher.init(), disablePwa(), getGlobalPref("touchController.mode") === "all") TouchController.setup();
  if (AppInterface && (getGlobalPref("mkb.enabled") || getGlobalPref("nativeMkb.mode") === "on")) STATES.pointerServerPort = AppInterface.startPointerServer() || 9269, BxLogger.info("startPointerServer", "Port", STATES.pointerServerPort.toString());
  if (getGlobalPref("ui.gameCard.waitTime.show") && GameTile.setup(), EmulatedMkbHandler.setupEvents(), getGlobalPref("ui.controllerStatus.show")) window.addEventListener("gamepadconnected", (e) => showGamepadToast(e.gamepad)), window.addEventListener("gamepaddisconnected", (e) => showGamepadToast(e.gamepad));
 }
